@@ -1,5 +1,6 @@
 package com.osite.omok;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class OmokSetting {
 	
 	// 승자
 	@ManyToOne
+	@Nullable
 	private User winner;
 	
 	// 패자
