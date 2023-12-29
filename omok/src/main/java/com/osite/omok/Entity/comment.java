@@ -22,8 +22,8 @@ public class comment {
 	private Integer commentNum;
 	
 	// 작성자
-//	@ManyToOne
-//	private 유저 유저;
+	@ManyToOne
+	private UserTable userNum; 
 	
 	// 본문 번호
 	@ManyToOne

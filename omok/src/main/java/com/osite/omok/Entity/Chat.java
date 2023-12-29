@@ -1,5 +1,8 @@
-package com.osite.omok;
+package com.osite.omok.Entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,18 +14,22 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class OmokSetting {
-
+public class Chat {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer gameNum;
+	private Integer chatNum;
 	
-	// 승자
+	// 유저 고유번호
 	@ManyToOne
-	private User winner;
+	private UserTable userNum;
 	
-	// 패자
-	@ManyToOne
-	private User loser;
+	// 내용 
+	@Column(length = 200) 
+	private String content;
 	
+	// 입력 시간
+	private LocalDateTime datetime;
+
 }
+ 
