@@ -1,4 +1,4 @@
-package com.osite.omok;
+package com.osite.omok.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +23,7 @@ public class OmokOrder {
 
     // 둔 사람
     @ManyToOne
-    private User userNum;
+    private UserTable userNum;
 
     // x 축
     private Integer xLine;

@@ -30,8 +30,8 @@ public class Board {
 	private String text;
 	
 	// 작성자
-//	@ManyToOne
-//	private 유저 유저;
+	@ManyToOne
+	private UserTable usernum;
 
 	// 작성일시
 	private LocalDateTime writeDateTime;

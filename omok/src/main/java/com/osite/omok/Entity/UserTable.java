@@ -1,4 +1,4 @@
-package com.osite.omok;
+package com.osite.omok.Entity;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class User {
+public class UserTable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,10 @@ public class User {
 	// 최종 로그인 날짜
 	private LocalDateTime lastLoginDate;
 	
+	// ID
 	private String username;
 	
+	// 비밀번호
 	private String password;
 	
 	// 닉네임
@@ -34,6 +36,6 @@ public class User {
 	// 패배 횟수
 	private Integer loseLate;
 	
-	
+
 
 }
