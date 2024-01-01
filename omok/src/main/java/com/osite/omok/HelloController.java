@@ -12,4 +12,10 @@ public class HelloController {
 	public String hello() {
 		return "HELLO WORLD 7777";
 	}
+	
+	@GetMapping("")
+	public String omokPage() {
+//		return "OmokBoardPage";
+		return "test";
+	}
 }
