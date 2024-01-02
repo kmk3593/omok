@@ -1,4 +1,4 @@
-package com.osite.omok.Entity;
+package com.osite.omok.entity;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class comment {
+public class Comment {
 
 	// 댓글 인식 번호
 	@Id

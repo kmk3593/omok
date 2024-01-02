@@ -1,4 +1,4 @@
-package com.osite.omok.Entity;
+package com.osite.omok.entity;
 
 import java.time.LocalDateTime;
 
@@ -14,26 +14,22 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Board {
-
-	// 인식 번호
+public class Chat {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer boardNum;
+	private Integer chatNum;
 	
-	// 제목
-	@Column(length = 30)
-	private String title;
-	
-	// 본문
-	@Column(columnDefinition = "TEXT")
-	private String text;
-	
-	// 작성자
+	// 유저 고유번호
 	@ManyToOne
-	private UserTable usernum;
-
-	// 작성일시
-	private LocalDateTime writeDateTime;
+	private UserTable userNum;
 	
+	// 내용 
+	@Column(length = 200) 
+	private String content;
+	
+	// 입력 시간
+	private LocalDateTime datetime;
+
 }
+ 
