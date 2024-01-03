@@ -1,4 +1,4 @@
-package com.osite.omok.Entity;
+package com.osite.omok.entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;

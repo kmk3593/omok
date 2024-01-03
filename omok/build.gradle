@@ -23,6 +23,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// thymeLeaf 추가
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	compileOnly 'org.projectlombok:lombok'
@@ -35,8 +37,19 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	// JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+<<<<<<< HEAD
 	// 어노테이션 jakatra
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+=======
+	
+	// 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+
+	// jakarta 관련이다   notEmpty 나 size 어노테이션 사용에 필요
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+>>>>>>> branch 'master' of https://github.com/kmk3593/omok.git
 }
 
 tasks.named('test') {
