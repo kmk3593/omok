@@ -37,10 +37,6 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	// JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-<<<<<<< HEAD
-	// 어노테이션 jakatra
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-=======
 	
 	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -48,8 +44,6 @@ dependencies {
 
 	// jakarta 관련이다   notEmpty 나 size 어노테이션 사용에 필요
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-
->>>>>>> branch 'master' of https://github.com/kmk3593/omok.git
 }
 
 tasks.named('test') {
