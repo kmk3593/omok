@@ -36,6 +36,4 @@ public class UserTable {
 	// 패배 횟수
 	private Integer loseLate;
 	
-
-
 }
