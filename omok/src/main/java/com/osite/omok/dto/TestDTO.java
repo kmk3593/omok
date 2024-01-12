@@ -1,4 +1,4 @@
-package com.osite.omok;
+package com.osite.omok.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

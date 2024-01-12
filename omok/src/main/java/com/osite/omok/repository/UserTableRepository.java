@@ -10,4 +10,6 @@ public interface UserTableRepository extends JpaRepository<UserTable, Integer>{
 
 	Optional<UserTable> findByusername(String username);
 	
+	UserTable findByuserNum(Integer userNum);
+	
 }
