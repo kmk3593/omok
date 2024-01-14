@@ -1,0 +1,51 @@
+@charset "EUC-KR";
+
+/* 바둑판 무늬 스타일 */
+.board_space {
+ 	width: 452px; /* 바둑판의 너비 */
+	height: 452px; /* 바둑판의 높이 */
+	display: inline-block;
+	text-align: center;
+}
+.back_space {
+  	position: absolute;
+  	width: 452px; /* 바둑판의 너비 */
+	height: 452px; /* 바둑판의 높이 */
+	background-color: green;
+}  
+.back_board {
+  	position: absolute;
+  	margin: 15px;
+	width: 421px; /* 바둑판의 너비 */
+	height: 421px; /* 바둑판의 높이 */
+	background: 
+		linear-gradient(90deg, #fff 1px, transparent 1px), /* 세로 줄 */
+	    linear-gradient(180deg, #fff 1px, transparent 1px), /* 가로 줄 */
+	    #000; /* 바둑판 색상 */
+	background-color: green;
+	background-size: 30px 30px; /* 각 칸의 크기 */
+}
+.stone_board {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(15, 30px);
+	grid-template-rows: repeat(15, 30px);
+	gap: 0px;
+	width: 452px; /* 바둑판의 너비 */
+	height: 452px; /* 바둑판의 높이 */
+}
+.intersection, .placed {
+	width: 30px;
+	height: 30px;
+	background-color: transparent;
+	border-radius: 50%;
+	cursor: pointer;
+	border: 1px solid black;
+} 
+.function_space{
+	width:450px;
+	display: inline-block;
+	background-color: yellow;
+	/* 옆 태그와 높이가 다를때 자유롭게 높이를 설정하는것같음 */
+	vertical-align: top;
+}
