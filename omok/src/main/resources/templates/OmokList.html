@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>제목</title>
+<!-- jquery 최신버전 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+
+
+	<!-- 로그인 정보가 있을경우 나타낼 화면 -->
+	<th:block sec:authorize="isAuthenticated()">
+		<form th:action="@{/omok/create/room}" method="post">
+		    <input type="text" id="roomName" name="roomName" placeholder="방 이름">
+		    <button type="submit">방 만들기</button>
+		</form>
+		<span>아래는 현재 있는 방 리스트입니다.</span>
+		<table>
+		    <tr th:each="room : ${roomList}" >
+		        <td>
+		        	<!-- @PathVariable의 정석 예시 -->
+		            <a th:href="@{/omok/omokroom/{roomID}(roomID=${room.roomID})}"
+		               th:text="${room.roomName}"></a>
+		        </td>
+		    </tr>
+		</table>
+	</th:block>
+	<!-- 로그인 정보가 없을경우 로그인을 요구할것 -->
+	<th:block sec:authorize="isAnonymous()">
+		<a class="nav-link" th:href="@{/user/login}">로그인</a>
+		<span>을 먼저 해주세요.</span>
+	</th:block>
+
+</body>
+</html>

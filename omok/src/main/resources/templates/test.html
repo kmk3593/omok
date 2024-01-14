@@ -1,94 +1,70 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>바둑판 배경</title>
+<title>제목</title>
+<!-- jquery 최신버전 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <style>
-  /* 바둑판 무늬 스타일 */
-    .back_board {
-    	position: relative;
-    	top:-450px;
-    	
-    	z-index:-1;
-    	margin: 15px;
-      width: 420px; /* 바둑판의 너비 */
-      height: 420px; /* 바둑판의 높이 */
-      background: 
-        linear-gradient(90deg, #fff 1px, transparent 1px), /* 세로 줄 */
-        linear-gradient(180deg, #fff 1px, transparent 1px), /* 가로 줄 */
-        #000; /* 바둑판 색상 */
-      background-color: green;
-      background-size: 30px 30px; /* 각 칸의 크기 */
-    }
-    .board {
-    	
-      display: grid;
-      grid-template-columns: repeat(15, 30px);
-      grid-template-rows: repeat(15, 30px);
-      gap: 0px;
-      /* background-color: #e0e0e0; */
-      /* border: 1px solid #999; */
-    }
-    .intersection {
-      width: 30px;
-      height: 30px;
-      background-color: transparent;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 1px solid black;
-      
-    }
+	
+	.box1{
+		width:300px;
+		height: 100px;
+		background-color: yellow;
+		display: inline-block;
+		
+	}
+	.box2{
+		width:300px;
+		height: 100px;
+		background-color: green;
+		display: inline-block;
+		position: relative;
+		vertical-align: top;
+		
+	}
+	.box3{
+		width:300px;
+		height: 100px;
+		background-color: red;
+		display: inline-block;
+		position: relative;
+		vertical-align: top;
+	}
+	.box4{
+		width:300px;
+		height:100px;
+		background-color: blue;
+		display: inline-block;
+	}
+	.box5{
+		width:300px;
+		height:100px;
+		background-color: orange;
+		display: inline-block;
+	}
 </style>
 </head>
 <body>
-
-	<div class="board" id="board"></div>
-	
-	<div class="back_board"></div>
-	
-	<script>
-	  const board = document.getElementById('board');
-	  const ROWS = 15;
-	  const COLS = 15;
-	  const intersections = [];
-	
-	  for (let i = 0; i < ROWS; i++) {
-	    for (let j = 0; j < COLS; j++) {
-	      const intersection = document.createElement('div');
-	      intersection.classList.add('intersection');
-	      intersection.id = 'intersection';
-	      /* intersection.setAttribute('onmouseover', "this.style.backgroundColor='white'") */
-	      /* intersection.setAttribute('onmouseover', "changeColor(e)") */
-	      intersection.setAttribute('onmouseout', "this.style.backgroundColor=''")
-	      intersection.dataset.row = i;
-	      intersection.dataset.col = j;
-	      board.appendChild(intersection);
-	      intersections.push(intersection);
-	    }
-	  }
-	
-	  intersections.forEach(intersection => {
-	    intersection.addEventListener('click', (e) => {
-	      const clicked = e.target;
-	      const row = parseInt(clicked.dataset.row);
-	      const col = parseInt(clicked.dataset.col);
-	      // 여기에 오목 돌을 놓는 로직을 추가할 수 있어요.
-	      // 클릭된 위치에 돌을 놓는 등의 기능을 만들 수 있습니다.
-	      // 예를 들어, 오목돌 이미지를 추가하거나, 돌의 상태를 기록하여 승리 여부를 확인할 수 있습니다.
-	    });
-	  });
-	  
-	  
-	// JQuery
-	$(document).ready(function(){
-		$(".intersection").mouseover(function(e){
-			/* console.log(e);
-			console.log(this); */
-			this.style.backgroundColor='white';
-		});
-	});
-  </script>
+	<div class="container">
+		<div class="box1">
+			<div>박스 1 <br> 박스 1 </div>
+			
+		</div>
+		<div class="box2">
+			<div>박스 2</div>
+		</div>
+		<!-- <div class="box3">
+			<div>박스 3 <br> 박스 3 <br>박스 3 </div>
+			
+		</div>
+		<div class="box4">
+			<div>박스 4</div>
+		</div>
+		<div class="box5">
+			<div>박스 5</div>
+		</div> -->
+	</div>
 
 </body>
 </html>

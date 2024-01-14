@@ -33,6 +33,13 @@ public class UserService {
 		return user;
 	}
 	
+	public UserTable getUserInfo(String username) {
+		Optional<UserTable> optionalUser = userRepository.findByusername(username);
+		UserTable user = optionalUser.get();
+		return user;
+	}
+	
+	
 	public UserTable getUser(String username) {
 		
 		Optional<UserTable> _userTable = userRepository.findByusername(username);

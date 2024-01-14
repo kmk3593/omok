@@ -1,61 +1,32 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>오목판</title>
- <style>
-    .board {
-      display: grid;
-      grid-template-columns: repeat(15, 30px);
-      grid-template-rows: repeat(15, 30px);
-      gap: 1px;
-      background-color: #e0e0e0;
-      border: 1px solid #999;
-    }
-    .intersection {
-      width: 30px;
-      height: 30px;
-      background-color: transparent;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 1px solid black;
-      
-    }
-    
-  </style>
+<title>바둑판 배경</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<link th:href="@{/css/omokBoardPage.css}" rel="stylesheet" type="text/css"/>
+<script th:src="@{/js/omokBoardPage.js}" th:inline="javascript" type="text/javascript"></script>
 </head>
 <body>
 
-<div class="board" id="board"></div>
-
-<script>
-  const board = document.getElementById('board');
-  const ROWS = 15;
-  const COLS = 15;
-  const intersections = [];
-
-  for (let i = 0; i < ROWS; i++) {
-    for (let j = 0; j < COLS; j++) {
-      const intersection = document.createElement('div');
-      intersection.classList.add('intersection');
-      intersection.dataset.row = i;
-      intersection.dataset.col = j;
-      board.appendChild(intersection);
-      intersections.push(intersection);
-    }
-  }
-
-  intersections.forEach(intersection => {
-    intersection.addEventListener('click', (e) => {
-      const clicked = e.target;
-      const row = parseInt(clicked.dataset.row);
-      const col = parseInt(clicked.dataset.col);
-      // 여기에 오목 돌을 놓는 로직을 추가할 수 있어요.
-      // 클릭된 위치에 돌을 놓는 등의 기능을 만들 수 있습니다.
-      // 예를 들어, 오목돌 이미지를 추가하거나, 돌의 상태를 기록하여 승리 여부를 확인할 수 있습니다.
-    });
-  });
-</script>
-
+	<div class="board_space">
+		<div class="back_space" id="board_space"></div>
+		<div class="back_board" id="back_board"></div>
+		<div class="stone_board" id="stone_board"></div>
+	</div>
+	
+	<div class="function_space">
+		<input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
+		<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+		<div>
+			<span>메세지 창</span>
+			<div class="msgArea"></div>
+		</div>
+		<input id="roomID" th:value="${room.roomID}" >
+	    <input id="userNum" th:value="${userNum}" >
+	    <input id="stone" th:value=${stone} >
+	    <input id="turn" value="black">
+	</div>
+	
 </body>
 </html>

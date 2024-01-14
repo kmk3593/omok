@@ -1,9 +1,12 @@
 package com.osite.omok.controller;
 
+<<<<<<< HEAD
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.security.Principal;
 
+=======
+>>>>>>> branch 'master' of https://github.com/kmk3593/omok.git
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,8 @@ import com.osite.omok.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 //import jakarta.servlet.http.HttpSession;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,12 +48,18 @@ public class MainController {
 		return "main_form";
 	}
 	
+
 //	@GetMapping("hello")
 //	@ResponseBody  /* 객체 반환.  이거 없으면 return에 적힌 html 페이지를 찾아감 */
 //	public String hello() {
 //		return "HELLO WORLD 7777";
 //	}
 	
+
+	@GetMapping("/test")
+	public String testPage() {
+		return "test";
+	}
 
 	
 }

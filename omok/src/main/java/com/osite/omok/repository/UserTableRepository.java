@@ -15,4 +15,6 @@ public interface UserTableRepository extends JpaRepository<UserTable, Integer>{
 	
 	List<UserTable> findByuserNumBetween(Integer StartNum, Integer EndNum);
 	
+	UserTable findByuserNum(Integer userNum);
+	
 }

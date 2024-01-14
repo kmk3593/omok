@@ -19,6 +19,14 @@
                 </li>
            </ol>
 	</div>
+
+
+	<div>
+		<a href="/omok/list">오목하러 가기</a>
+	</div>
+	<div>
+		<a href="/test">테스트 페이지</a>
+	</div>	
 	
 	
 	<h1>채팅창</h1>
@@ -28,6 +36,8 @@
 		<p><textarea cols="50" rows="1" id="msg"></textarea>
 		<input type="submit" id="input-send" sec:authorize="isAuthenticated()" value="입력"></p>
 		<!-- <input type="submit" value="입력"> -->
+	
+
 	 
 	
 <script th:inline="javascript">
@@ -110,6 +120,7 @@
 	})
 
 </script>
+
 	
 </body>
 </html>
