@@ -1,6 +1,7 @@
 package com.osite.omok.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,16 @@ public class UserService {
 		this.userRepository.save(user);
 	
 		return user;
+	}
+	
+	public UserTable getUser(String username) {
+		
+		Optional<UserTable> _userTable = userRepository.findByusername(username);
+		UserTable userTable = _userTable.get();
+
+		System.out.println(userTable.toString());
+		
+		return userTable;
 	}
 	
 
