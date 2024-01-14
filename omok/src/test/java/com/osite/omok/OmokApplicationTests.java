@@ -28,5 +28,21 @@ class OmokApplicationTests {
 	
 		
 	}
+	 
+	@Test 
+	void getUser() {
+		String nickname = "nick5";
+		UserTable usertable = userTableRepository.findBynickname(nickname);
+		System.out.println(usertable.toString());
+		
+	}
+	
+	@Test 
+	void getUsernum() {
+		Integer startNum = 3;
+		Integer endNum = 5;
+		List<UserTable> userTable2 = userTableRepository.findByuserNumBetween(startNum, endNum);
+		System.out.println(userTable2.toString());
+	}
 
 }

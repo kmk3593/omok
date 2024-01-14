@@ -39,5 +39,16 @@ public class UserService {
 		return user;
 	}
 	
+	
+	public UserTable getUser(String username) {
+		
+		Optional<UserTable> _userTable = userRepository.findByusername(username);
+		UserTable userTable = _userTable.get();
+
+		System.out.println(userTable.toString());
+		
+		return userTable;
+	}
+	
 
 }

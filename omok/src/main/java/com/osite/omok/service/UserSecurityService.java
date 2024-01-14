@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.osite.omok.UserRole;
 import com.osite.omok.entity.UserTable;
 import com.osite.omok.repository.UserTableRepository;
+import com.osite.omok.security.UserRole;
 
 import lombok.RequiredArgsConstructor;
 

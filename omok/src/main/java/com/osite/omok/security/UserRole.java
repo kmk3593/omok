@@ -1,4 +1,4 @@
-package com.osite.omok;
+package com.osite.omok.security;
 
 import lombok.Getter;
 

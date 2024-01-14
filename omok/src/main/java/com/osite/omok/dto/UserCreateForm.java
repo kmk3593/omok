@@ -1,4 +1,4 @@
-package com.osite.omok;
+package com.osite.omok.dto;
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotEmpty;

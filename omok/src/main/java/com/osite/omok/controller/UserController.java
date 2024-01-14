@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.osite.omok.UserCreateForm;
+import com.osite.omok.dto.UserCreateForm;
 import com.osite.omok.service.UserService;
 
 import jakarta.validation.Valid;
