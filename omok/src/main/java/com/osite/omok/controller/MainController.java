@@ -1,12 +1,8 @@
 package com.osite.omok.controller;
 
-<<<<<<< HEAD
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
 import java.security.Principal;
 
-=======
->>>>>>> branch 'master' of https://github.com/kmk3593/omok.git
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.osite.omok.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
-//import jakarta.servlet.http.HttpSession;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
