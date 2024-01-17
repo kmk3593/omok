@@ -40,6 +40,16 @@ public class OmokSetting {
 	// 방이 보여지는 이름 
 	private String roomName;
 	
+	// 승리한 유저
+	@ManyToOne
+	@Nullable
+	private UserTable winner;
+	
+	// 패배한 유저
+	@ManyToOne
+	@Nullable
+	private UserTable loser;
+	
 	// 흑돌 세션
 //	private String blackSession;
 	

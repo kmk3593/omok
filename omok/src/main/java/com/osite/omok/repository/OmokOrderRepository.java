@@ -10,4 +10,6 @@ import com.osite.omok.entity.OmokSetting;
 public interface OmokOrderRepository extends JpaRepository<OmokOrder, Integer>{
 
 	List<OmokOrder> findBygameNum(OmokSetting gameNum);
+	
+	void deleteBygameNum(OmokSetting gameNum);
 }

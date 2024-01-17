@@ -6,6 +6,7 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.http.HttpHeaders;
@@ -21,15 +22,21 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osite.omok.dto.OmokRoomDTO;
 import com.osite.omok.dto.TransferMessage;
+import com.osite.omok.dto.TransferMessage.messageType;
+import com.osite.omok.entity.UserTable;
 import com.osite.omok.service.OmokService;
+import com.osite.omok.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketHandler extends TextWebSocketHandler {
+public class WebSocketOmokHandler extends TextWebSocketHandler {
 	
 	private final OmokService omokService;
+	private final UserService userService;
+	
+	TextMessage testMessage;
 	
 	//  ObjectMapper : json을 object로 바꿔주거나 object형태를 json으로 바꿀때 사용하는 객체
 	private final ObjectMapper objectMapper;
@@ -37,17 +44,55 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override // 연결 했을때
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 			System.out.printf("%s 연결됨\n",session.getId());
-			
+//			Principal principal = session.getPrincipal();
+//			System.out.println(principal.toString());
+//			System.out.println(principal.getName());
+			System.out.println("연결 끝");
 	}
 
 	@Override // 연결 끊을때
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.printf("%s 연결 끊김\n",session.getId());
+//		Principal principal = session.getPrincipal();
+//		System.out.println(principal.toString());
+//		System.out.println(principal.getName());
+//		System.out.println(status.toString());
+//		System.out.println(status.getReason());
+		
+		OmokRoomDTO room = omokService.quitRoom(session, status);
+		System.out.println(room.toString());
+		
+		omokService.findEnemyPlayer(session.getPrincipal().getName(), room.getRoomID());
+		UserTable sender = userService.getUserInfo(session.getPrincipal().getName());
+		Set<WebSocketSession> sessions = room.getSessions();
+		
+		TransferMessage transferMessage = new TransferMessage();
+		transferMessage.setType(messageType.QUIT);
+		transferMessage.setRoomID(room.getRoomID());
+		transferMessage.setSender(sender.getUserNum());
+		
+		sendToEachSocket(sessions, new TextMessage(objectMapper.writeValueAsString(transferMessage)));
+		
+		System.out.println("끊김 끝");
+		
+		// 그냥 뒤로가기 눌렀을때
+		// CloseStatus[code=1001, reason=null]
+		
+		// 서버 중단했을때
+		// CloseStatus[code=1001, reason=The web application is stopping]
+		
+		// 창을 닫을때
+		// CloseStatus[code=1001, reason=null]
+		
+		
+//		new TextMessage(objectMapper.writeValueAsString(transferMessage))
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.printf("%s로부터 [%s]받음\n", session.getId(), message.getPayload());
+		System.out.println();
+		
 		
 		// payload는 서버와 주고받을 실제 데이터
 		String payload = message.getPayload();

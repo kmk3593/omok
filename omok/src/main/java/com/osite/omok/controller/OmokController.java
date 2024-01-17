@@ -28,7 +28,7 @@ public class OmokController {
 	
 	@GetMapping("/omok/list")
 	public String omokList(Model model) {
-		List<OmokSetting> roomList = omokService.findAllRoom();
+		List<OmokSetting> roomList = omokService.findAbleToEnterOmokRoom();
 		model.addAttribute("roomList", roomList);
 		
 		return "OmokList";
@@ -41,14 +41,12 @@ public class OmokController {
     		) {
 		
 //		String 유저정보 = authentication.getPrincipal().toString();
-		String 아이디 = authentication.getName();
-		System.out.println(아이디);
+//		String 아이디 = authentication.getName();
+//		System.out.println(아이디);
 		
 		// 방 이름, 만든 유저 아이디를 전송
 		omokSetting = omokService.createRoom(omokSetting, authentication.getName());
-		System.out.println("끝");
-//        model.addAttribute("room",roomID);
-//        model.addAttribute("username",username);
+
 		String uuid = omokSetting.getRoomID(); 
 		
         return "redirect:/omok/omokroom/"+uuid;  //만든사람이 오목방에 첫번째로 입장
@@ -61,7 +59,7 @@ public class OmokController {
 		
 		
 		// false는 입장 불허, true는 입장 허용
-		boolean enter = true;
+//		boolean enter = true;
 		
 		String stone = "";
 		

@@ -34,7 +34,7 @@
 	width: 452px; /* 바둑판의 너비 */
 	height: 452px; /* 바둑판의 높이 */
 }
-.intersection, .placed {
+.intersection, .black_stone, .white_stone {
 	width: 30px;
 	height: 30px;
 	background-color: transparent;
