@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min.js
+"></script>
 </head>
 <body>
 	<div> 
@@ -11,25 +15,100 @@
 				<h4>회원가입</h4>
 			</div>
 		</div> 
-		<form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+		<form th:action="@{/user/signup}"  onsubmit="return validateForm()" th:object="${userCreateForm}" method="post">
 			<div class="mb-3">
-				<label for="username" class="form-label">사용자</label>
-				<input type="text" th:field="*{username}" class="form-control">
+				<label for="username" class="form-label">ID</label>
+				<input id="inputID" type="text" th:field="*{username}" class="form-control">
+				<label color="blue"> 영어, 숫자 10글자 이내</label>
 			</div>
 			<div class="mb-3">
 				<label for="password1" class="form-label">비밀번호</label>
-				<input type="text" th:field="*{password1}" class="form-control">
+				<input id="inputPass" type="text" th:field="*{password1}" class="form-control">
+				<label color="blue"> 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하 </label>
 			</div>
 			<div class="mb-3">
 				<label for="password2" class="form-label">비밀번호 확인</label>
-				<input type="text" th:field="*{password2}" class="form-control">
+				<input id="inputConf" type="text" th:field="*{password2}" class="form-control">
+				<label color="blue"> 이하 동문</label>
 			</div> 
 			<div class="mb-3">
 				<label for="nickname" class="form-label">닉네임</label>
-				<input type="text" th:field="*{nickname}" class="form-control">
+				<input id="inputNick" type="text" th:field="*{nickname}" class="form-control">
+				<label color="blue"> 한글, 영어, 숫자 10글자 이하</label>
 			</div>	
 			<button type="submit" class="btn btn-primary">회원가입</button>
 		</form>
 	</div>
+	
+<script type="text/javascript">
+
+	var regexID;
+	var regexPass;
+	var regexCinf;
+	var regexNick;
+	
+	let goodSignup = false;
+
+	// 회원가입 정보 - 유효성 확인 
+	function validateForm(){
+		
+ 		let inputID = document.getElementById("inputID");
+		var signupID = inputID.value;
+		
+		let inputPass = document.getElementById("inputPass");
+		var signupPass = inputPass.value;
+
+		let inputConf = document.getElementById("inputConf");
+		var signupConf = inputConf.value;
+
+		let inputNick = document.getElementById("inputNick");
+		var signupNick = inputNick.value;
+		
+		// 대문자를 소문자로 변환
+	  	const processedString = signupID.toLowerCase();
+		console.log("signupID = " + signupID + " & 변환 = " + processedString);
+		inputID.value = processedString;
+		
+	 	if(!regexID.test(processedString)){
+			alert("잘못된 ID : " + processedString);
+			
+		}else if(!regexPass.test(signupPass)){
+			alert("잘못된 Pass : " + signupPass);
+			
+		}else if(!regexConf.test(signupConf)){
+			alert("잘못된 Pass Confirm : " + signupConf);
+			 
+		}else if(!regexNick.test(signupNick)){
+			alert("잘못된 Nickname : " + signupNick);
+			
+		}else{
+			alert("똑똑한 ID : " + signupID);
+			goodSignup = true;
+		}   
+	 	return goodSignup;
+	}
+
+	$(document).ready(function(){
+		
+		
+		// ID 제한
+		// 대소문자 구분 없음. 영어, 숫자. 10 글자 이하
+		regexID = /^[a-zA-Z0-9]{1,10}$/; 
+
+		// 비밀번호 제한
+		// 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하
+		regexPass = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
+		
+		// 비밀번호 확인 제한
+		// 이하 동문
+		regexConf = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
+		
+		// 닉네임 제한
+		// 한글 또는 영어 또는 숫자. 10글자 이하	
+		regexNick = /^[a-zA-Z0-9가-힣]{1,10}$/;
+	
+	})
+</script>	
+	
 </body>
 </html>

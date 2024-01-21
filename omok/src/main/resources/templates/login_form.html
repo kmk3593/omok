@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 	<div>
-	    <form th:action="@{/user/login}" method="post">
+	    <form th:action="@{/user/login}" method="post" onsubmit="return LowerForm();">
 	        <div th:if="${param.error}">
 	            <div class="alert alert-danger">
 	                사용자ID 또는 비밀번호를 확인해 주세요.
@@ -23,5 +24,20 @@
 	        <button type="submit" class="btn btn-primary">로그인</button>
 	    </form>
 	</div>
+<script th:inline="javascript">
+	
+function LowerForm() {
+	
+    // 입력된 문자열을 소문자로 변환
+    var userInput = document.getElementById("username").value;
+
+    // input 태그의 문자열을 소문자로 변환
+    username.value = userInput.toLowerCase();
+    
+    return true;
+  }	
+
+
+</script>
 </body>
 </html>

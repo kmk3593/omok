@@ -44,4 +44,5 @@ public class UserSecurityService implements UserDetailsService {
 		return new User(userTable.getUsername(), userTable.getPassword(), authorities);
 	}
 	
+	
 }

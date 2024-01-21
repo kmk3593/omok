@@ -32,7 +32,7 @@ public class MainController {
 			System.out.println("name : " + name);
 			
 			model.addAttribute("User", userService.getUser(name));
-			model.toString();
+//			model.toString();
 			
 			System.out.println(userService.getUser(name).toString());
 		}
