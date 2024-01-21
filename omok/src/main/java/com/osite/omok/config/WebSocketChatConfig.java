@@ -20,8 +20,10 @@ public class WebSocketChatConfig implements WebSocketConfigurer{
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		  registry.addHandler(chatHandler, "ws/chat").setAllowedOrigins("*");
-		
 
 	}
 
 }
+
+	
+

@@ -4,10 +4,13 @@
 <meta charset="UTF-8">
 <title>메인페이지</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min.js
+"></script>
 </head>
 <body>
 	<h1>메인 페이지</h1>
- 	<h2 sec:authorize="isAuthenticated()" th:text="${User.username}"></h2> 
+ 	<h2 sec:authorize="isAuthenticated()" th:text="${User.nickname}"></h2> 
 	<div>
           <ol class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -34,16 +37,29 @@
 	<p><textarea cols="50" rows="10" id="msgArea" readonly></textarea></p>
 	
 	
-		<p><textarea cols="50" rows="1" id="msg"></textarea>
-		<input type="submit" id="input-send" sec:authorize="isAuthenticated()" value="입력"></p>
+		<p><input cols="50" rows="1" id="msg" onkeydown="handleKeyPress(event)">  
+		<input type="submit" id="input-send" sec:authorize="isAuthenticated()"></p>
 		<!-- <input type="submit" value="입력"> -->
 	
 
 	 
 	
 <script th:inline="javascript">
+
+		// Enter 키로 채팅 전송 가능
+ 	    function handleKeyPress(event) {
+
+			// Enter 키의 keyCode는 13입니다.
+		  	if (event.keyCode === 13) {
+		    // Enter 키가 눌렸을 때 대체 submit 타입의 버튼을 클릭합니다.
+		    document.getElementById('input-send').click();
+		  }
+		} 
+
+
 	$(document).ready(function(){
 		
+		// websocketChatConfig 파일에서 설정한 경로
 		const websocket = new WebSocket("ws://localhost:8080/ws/chat");
 		
 	    websocket.onmessage = onMessage;
@@ -58,15 +74,36 @@
 	    	send();
 	    });
 	    
+	    
+	    // 문자열 뒤의 공백 제거
+	    function removeTrailingSpaces(inputString) {
+    	  // 정규 표현식을 사용하여 문자열 뒤의 공백을 찾아 제거합니다.
+    	  return inputString.replace(/\s+$/, '');
+    	}
+	    
 	    function send(){
 	    	
 	    	let msg = document.getElementById("msg");
 	    	
-	    	console.log(username + ":" + msg.value);
-	    	websocket.send(username + ":" + msg.value);
-	    	msg.value = '';
+	    	var regex =  /^\s+/;
+		     
+            var targetText = msg.value;
+            console.log(targetText); 
+
+            if(regex.test(targetText) || targetText==""){
+                console.log("공백으로 시작")
+                alert("공백으로 시작하는 문자열이거나 아무것도 입력하지 않음");
+
+            } else{
+                console.log("문자열로 시작")
+                
+                websocket.send(username + ":" + removeTrailingSpaces(msg.value));
+    	    	msg.value = '';
+            }
 	    	
 	    }
+	    
+
 	    
 	    
 	    // 메인페이지 접속했을 때
@@ -84,27 +121,24 @@
 	    
 	    // 메세지 받았을 때 발생하는 이벤트
 	    function onMessage(msg){
-	    	console.log("msg : " + msg);
+	    	/* console.log("msg : " + msg); */
 	     	var data = msg.data;
 	    	var sessionId = null;
 	     
 	    	// 데이터를 보낸 사람
 	    	var message = null;
 	    	var arr = data.split(":");
-	    	
+	/*     	
 	    	for(var i=0; i<arr.length; i++){
 	    		console.log('arr[' + i + ']: ' + arr[i]);
-	    	}
+	    	} */
 	    	
 	    	var cur_session = username;
 	    	
 	    	// 현재 세션에 로그인 한 사람
-	    	console.log("cur_session: " + cur_session);
 	    	sessionId = arr[0];
 	    	message = arr[1];
 	    	
-	    	console.log("sessionId: " + sessionId);
-	    	console.log("cur_session: " + cur_session);
 	    	
 	    	// 로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
 	    	if(message!=null){
@@ -115,6 +149,12 @@
 	    	else{
 	    		var str = sessionId + "\n";
 	    		$("#msgArea").append(str);	
+	    		
+/* 	    		alert("Length = ");
+	    		
+	    		if(message.trim().isEmpty()){
+	    			alert("isempty");
+	    		} */
 
 	    	}
 	    }		    

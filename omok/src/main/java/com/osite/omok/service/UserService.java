@@ -1,5 +1,6 @@
 package com.osite.omok.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,8 @@ public class UserService {
 		UserTable user = new UserTable();
 		user.setUsername(username);
 		user.setNickname(nickname);
+		user.setWinLate(0);
+		user.setLoseLate(0);
 		
 		// password는 암호화하여 저장. 
 		user.setPassword(passwordEncoder.encode(password));
