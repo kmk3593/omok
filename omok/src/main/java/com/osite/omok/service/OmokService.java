@@ -1,16 +1,19 @@
 package com.osite.omok.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.WebSocketSession;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osite.omok.dto.OmokRoomDTO;
 import com.osite.omok.dto.TransferMessage;
 import com.osite.omok.entity.OmokOrder;
@@ -42,11 +45,26 @@ public class OmokService {
 	}
 	
 	// 모든 방 목록을 list로 반환
-	public List<OmokSetting> findAllRoom() {
-		List<OmokSetting> roomList = omokSettingRepository.findBywhiteStone(null);
-		System.out.println("..............");
-		System.out.println(roomList.size());
-		return roomList;
+	public List<OmokSetting> findAbleToEnterOmokRoom() {
+//		List<OmokSetting> roomList = omokSettingRepository.findBywhiteStone(null);
+		
+		// 현재 서버가 돌아가기 시작한 이후부터 생성된 오목 방들의 uuid를 가져오기
+		Set<String> roomIDs = omokRooms.keySet();
+		
+		List<OmokSetting> omokSettings = new ArrayList<OmokSetting>();
+		
+		for (String roomID : roomIDs) {
+			
+			OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
+			if (omokSetting.getWhiteStone() == null) {
+				System.out.println("백돌 null 찾음");
+				omokSettings.add(omokSetting);
+			} else {
+				System.out.println("백돌 null 아닌거 찾음");
+			}
+		}
+		
+		return omokSettings;
 	}
 	
 	// 처음 방에 입장할때 방을 만들 필요가 있음
@@ -135,7 +153,81 @@ public class OmokService {
 		omokOrderRepository.save(order);
 	}
 	
+	public OmokRoomDTO quitRoom(WebSocketSession session, CloseStatus status) {
+
+		OmokRoomDTO omokRoom = null;
+		String roomID = null;
+//		String sessionID = session.getId();
+		
+//		System.out.println(sessionID);
+		
+		System.out.println(omokRooms.size());
+		
+		Set<String> keys = omokRooms.keySet();
+		
+		// 2중 for문 : session을 가지고 roomDto를 찾아내는 과정
+		Loop:
+		for (String key : keys) {
+			OmokRoomDTO room = omokRooms.get(key);
+			
+			Set<WebSocketSession> sessions = room.getSessions();
+			
+			for (WebSocketSession targetSession : sessions) {
+				// 같은 session을 찾기 
+				if (targetSession.getId().equals(session.getId())) {
+
+					omokRoom = room;
+					roomID = room.getRoomID();
+					// 2중 반복문을 한번에 종료
+					break Loop;
+				}
+			}
+		}
+		// 백돌 유저가 입장하기 전이었다면
+		// 혼자 두고있던 order삭제, 들어가있던 setting을 삭제
+		if (omokRoom.getSessions().size() == 1) {
+			OmokSetting targetOmokSetting = omokSettingRepository.findByroomID(roomID);
+			
+			omokOrderRepository.deleteBygameNum(targetOmokSetting);
+			omokSettingRepository.deleteByroomID(roomID);
+		}
+		
+		// 평범하게 사용자가 종료한 상황
+		if(status.getReason() == null) {
+			// 해당 세션 지우기 + 세션 갯수로 구분?해서 승패 지정?
+			omokRoom.getSessions().remove(session);
+			// 내가 갖고있는 데이터 : 
+			// roomID, session.getPrincipal(), omokRoom
+			
+			// 남은 세션이 1개인 경우   <--- 여기서 시작하면 됨
+			if (omokRoom.getSessions().size() == 1) {
+				System.out.println("남은 사용자에게 승리메세지를 보내고 승자패자를 기록하면 됨");
+			} else if (omokRoom.getSessions().size() == 0) {
+				// 남은 세션이 0개인 경우 // 세션이 하나만 있었던 경우
+//				omokSettingRepository  
+				System.out.println("남은 사용자가 없고 세션 지웠으니까 끝나는듯?");
+			}
+			
+		} else {
+			System.out.println("서버가 중단한 경우");
+		}
+		
+		
+		return omokRoom;
+	}
 	
+	public UserTable findEnemyPlayer(String username, String roomID) {
+		// TODO Auto-generated method stub
+		Optional<UserTable> optionalUserTable = userTableRepository.findByusername(username);
+		UserTable user = optionalUserTable.get();
+		
+		OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
+		if(omokSetting.getBlackStone().equals(user)) {
+			return omokSetting.getWhiteStone();
+		} else{
+			return omokSetting.getBlackStone();
+		}
+	}
 	
 	
 	

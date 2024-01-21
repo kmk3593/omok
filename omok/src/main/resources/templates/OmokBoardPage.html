@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+<!-- 파비콘아이콘? 이 없다고 에러가 나오는것을 방지 -->
+<!-- 없어도 실행은 됨 -->
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <meta charset="UTF-8">
 <title>바둑판 배경</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -16,8 +19,8 @@
 	</div>
 	
 	<div class="function_space">
-		<input type="text" placeholder="보낼 메세지를 입력하세요." class="content">
-		<button type="button" value="전송" class="sendBtn" onclick="sendMsg()">전송</button>
+		<input type="text" placeholder="보낼 메세지를 입력하세요." class="content" onkeydown="inputEnterKey(event)">
+		<button type="button" class="sendBtn" onclick="sendMessage()">전송</button>
 		<div>
 			<span>메세지 창</span>
 			<div class="msgArea"></div>
@@ -26,6 +29,7 @@
 	    <input id="userNum" th:value="${userNum}" >
 	    <input id="stone" th:value=${stone} >
 	    <input id="turn" value="black">
+	    
 	</div>
 	
 </body>
