@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.osite.omok.dto.OmokRoomDTO;
+import com.osite.omok.dto.TransferMessage;
 import com.osite.omok.entity.OmokSetting;
 import com.osite.omok.entity.UserTable;
 import com.osite.omok.service.OmokService;
@@ -85,6 +87,16 @@ public class OmokController {
 		}
 		model.addAttribute("stone", stone);
 		return "OmokBoardPage";
+	}
+	
+	
+	// ajax
+	@GetMapping(value = "/omok/player/check")
+	@ResponseBody
+	public int playerNumberCheck(TransferMessage transferMessage) {
+		OmokRoomDTO omokRoom = omokService.findRoomByID(transferMessage.getRoomID());
+		
+		return omokRoom.getSessions().size();
 	}
 	
 }

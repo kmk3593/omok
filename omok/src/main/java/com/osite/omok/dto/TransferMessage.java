@@ -11,7 +11,7 @@ import lombok.ToString;
 public class TransferMessage {
 	// 입장, 대화, 퇴장, 착수
 	public enum messageType{
-		ENTER, TALK, QUIT, PLACE
+		ENTER, TALK, QUIT, PLACE, GIVEUP, WIN
 	}
 	
 	private messageType type;

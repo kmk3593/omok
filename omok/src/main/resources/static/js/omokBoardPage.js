@@ -1,11 +1,7 @@
-/**
- * 
- */
- 
- 
 var webSocket;
 var placedStoneSound; 
 var enterPlayerSound; 
+var clockSecondsSound;
 var roomID;
 var userNum;
 var board;
@@ -13,6 +9,9 @@ const MAX_ROW = 15;
 const MAX_COL = 15;   
 var intersections;
 var myStone
+var playerNumber;
+var countDown = 5;
+let timerOn = setInterval(playTimer, 1000)
 
 // JQuery
 $(document).ready(function(){
@@ -24,8 +23,11 @@ $(document).ready(function(){
 	intersections = []; // 필요는 없음
 	myStone = $("#stone").val();
 	webSocket = new WebSocket("ws://" + location.host + "/ws/omok");
+	clockSecondsSound = new Audio("/sound_file/clockSecondsSound.mp3");
 	placedStoneSound = new Audio("/sound_file/placedStoneSound.mp3");
 	enterPlayerSound = new Audio("/sound_file/enterPlayerSound.mp3");
+	
+	timer = document.querySelector("#timer");
 	
 	
 	// 돌 생성
@@ -56,8 +58,6 @@ $(document).ready(function(){
 		/* console.log("수신메세지 : ", transferMessage); */
 		/* console.log(transferMessage.type); */
 		/* console.log(transferMessage.message); */
-		/* console.log(typeof transferMessage); */
-		  // console.log(transferMessage)
 		  
 		if(transferMessage.type == "PLACE"){
 			/* console.log(transferMessage.xLine); */
@@ -66,9 +66,13 @@ $(document).ready(function(){
 			var turn = $("#turn").val();
 			placedStoneSound.play();
 			if(checkWinner(Number(transferMessage.xLine)-1, Number(transferMessage.yLine)-1, turn)){
-				gameFinish();
+				if(myStone == $("#turn").val()){
+					sendWinMessage();
+				}
+				gameWin();
 			} else{
 				turnOver();
+				timerReload();
 			}
 		} else if(transferMessage.type == "ENTER"){
 			let msgArea = document.querySelector('.msgArea');
@@ -76,30 +80,29 @@ $(document).ready(function(){
 			newMsg.innerText=transferMessage.message;
 			msgArea.append(newMsg);
 			enterPlayerSound.play();
+			if(playerNumberCheck()== 2){
+				clearInterval(timerOn);
+				timerOn = setInterval(playTimer, 1000);
+			}else{
+				clearInterval(timerOn);
+			}
 		} else if(transferMessage.type == "TALK"){
 			let msgArea = document.querySelector('.msgArea');
 			let newMsg = document.createElement('div');
 			newMsg.innerText=transferMessage.message;
 			msgArea.append(newMsg);
 		} else if(transferMessage.type == "QUIT"){
-			alert("당신이 승리하셨습니다.")
+			sendWinMessage();
+			gameWin();
+		} else if(transferMessage.type == "GIVEUP"){
+			console.log(transferMessage);
+			if(transferMessage.sender == userNum){
+				gameLose();
+			} else{
+				gameWin();
+			}
 		}
 	};
-	
-	function enterRoom(webSocket){
-		
-		/* console.log(roomID); */
-		/* console.log(userNum); */
-		var enterMessage = {
-			"type" : "ENTER",
-			"roomID" : roomID,
-			"sender" : userNum
-		};
-		
-		// json 형태로 변형하여 전송
-		// 필수는 아닐거로 생각됨  
-		webSocket.send(JSON.stringify(enterMessage));
-	}
 		
 	// 돌 위에 마우스를 올렸을때 색 변경 
 	$(".intersection").mouseover(function(e){
@@ -143,6 +146,20 @@ $(document).ready(function(){
 	
 });
 
+function enterRoom(webSocket){
+	/* console.log(roomID); */
+	/* console.log(userNum); */
+	var enterMessage = {
+		"type" : "ENTER",
+		"roomID" : roomID,
+		"sender" : userNum
+	};
+	
+	// json 형태로 변형하여 전송
+	// 필수는 아닐거로 생각됨  
+	webSocket.send(JSON.stringify(enterMessage));
+}
+
 // 착수 한 돌의 색깔 바꾸기
 function placeStone(xLine, yLine){
 	var stones = document.getElementsByClassName('intersection');
@@ -173,13 +190,6 @@ function turnOver(){
 		turnInput = document.getElementById("turn");
 		turnInput.value = "black";
 	}
-}
-
-function gameFinish(){
-	alert($("#turn").val() + " win")
-	turnInput = document.getElementById("turn");
-	turnInput.value = "";
-	
 }
 
 function sendMessage(){
@@ -303,5 +313,103 @@ function checkDirection(board, col, row, player, colIncrement, rowIncrement) {
     return false;
 }
 
+// 엔터로 받을때 ajax로 확인
+function playerNumberCheck(){
+	
+	var returnNum;
+	
+	var transferMessage = { 
+		"roomID": roomID
+		}
+	
+	$.ajax({
+		type : 'get',           // 타입 (get, post, put 등등)
+		url : '/omok/player/check' , // 요청할 서버url    
+		async : false,            // 비동기화 여부 (default : true)    
+		headers : {              // Http header      
+			"Content-Type" : "application/json",      
+			"X-HTTP-Method-Override" : "POST"    
+		},    
+		dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)    
+		data : 
+			transferMessage
+		,    
+		
+		success : function(result) { // 결과 성공 콜백함수
+			returnNum = result;
+		},    
+		error : function(request, status, error) { // 결과 에러 콜백함수        
+		console.log(error)    
+		}
+	})
+	
+	return returnNum;
+}
 
 
+function playTimer(){
+	
+	makeCountDownClock(countDown)
+	if(countDown == 0){
+		// 시간 제한을 다하면 알림
+		clearInterval(timerOn);
+		// 턴 사라지고 승리라고 알리고 항복으로 websocket 보내고
+		var turn = $("#turn").val();
+		console.log(turn)
+		console.log(myStone)
+		if(turn == myStone){
+			sendGiveUpMessage();
+		}
+		
+		alert("시간 종료")
+	}		
+}
+
+function makeCountDownClock(sec){
+	document.getElementById("timer")
+    	.innerHTML =
+    	'<div>' + sec + '<span>Seconds</span></div>';
+    clockSecondsSound.play();
+		countDown--;
+}
+
+function timerReload(){
+	// 돌을 놓으면 타이머를 재시작
+	clearInterval(timerOn);
+	countDown = 5;
+	timerOn = setInterval(playTimer, 1000);	
+}
+
+function sendGiveUpMessage(){
+	var giveUpMessage={
+			"type" : "GIVEUP",
+			"roomID":roomID,
+			"sender":userNum
+		};
+		
+	webSocket.send(JSON.stringify(giveUpMessage));
+}
+
+function sendWinMessage(){
+	var winMessage={
+			"type" : "WIN",
+			"roomID":roomID,
+			"sender":userNum
+		};
+		
+	webSocket.send(JSON.stringify(winMessage));
+}
+
+function gameWin(){
+	alert($("#turn").val() + " win")
+	turnInput = document.getElementById("turn");
+	turnInput.value = "";
+	clearInterval(timerOn)
+}
+
+function gameLose(){
+	alert("lose")
+	turnInput = document.getElementById("turn");
+	turnInput.value = "";
+	clearInterval(timerOn)
+}

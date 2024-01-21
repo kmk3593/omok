@@ -7,12 +7,14 @@
 	display: inline-block;
 	text-align: center;
 }
+
 .back_space {
   	position: absolute;
   	width: 452px; /* 바둑판의 너비 */
 	height: 452px; /* 바둑판의 높이 */
 	background-color: green;
 }  
+
 .back_board {
   	position: absolute;
   	margin: 15px;
@@ -25,6 +27,7 @@
 	background-color: green;
 	background-size: 30px 30px; /* 각 칸의 크기 */
 }
+
 .stone_board {
 	position: relative;
 	display: grid;
@@ -34,6 +37,7 @@
 	width: 452px; /* 바둑판의 너비 */
 	height: 452px; /* 바둑판의 높이 */
 }
+
 .intersection, .black_stone, .white_stone {
 	width: 30px;
 	height: 30px;
@@ -42,10 +46,37 @@
 	cursor: pointer;
 	border: 1px solid black;
 } 
+
 .function_space{
 	width:450px;
 	display: inline-block;
-	background-color: yellow;
 	/* 옆 태그와 높이가 다를때 자유롭게 높이를 설정하는것같음 */
 	vertical-align: top;
+}
+
+#timer {
+    font-size: 3em;
+    font-weight: 100;
+    color: white;
+    padding: 20px;
+    width: 700px;
+    color: white;
+}
+
+#timer div {
+    display: inline-block;
+    min-width: 90px;
+    padding: 15px;
+    background: #020b43;
+    border-radius: 10px;
+    border: 2px solid #030d52;
+    margin: 15px;
+}
+
+#timer div span {
+    color: #ffffff;
+    display: block;
+    margin-top: 15px;
+    font-size: .35em;
+    font-weight: 400;
 }

@@ -27,16 +27,15 @@ import com.osite.omok.entity.UserTable;
 import com.osite.omok.service.OmokService;
 import com.osite.omok.service.UserService;
 
+import ch.qos.logback.core.subst.Token.Type;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class WebSocketOmokHandler extends TextWebSocketHandler {
+public class OmokSocketHandler extends TextWebSocketHandler {
 	
 	private final OmokService omokService;
 	private final UserService userService;
-	
-	TextMessage testMessage;
 	
 	//  ObjectMapper : json을 object로 바꿔주거나 object형태를 json으로 바꿀때 사용하는 객체
 	private final ObjectMapper objectMapper;
@@ -44,10 +43,6 @@ public class WebSocketOmokHandler extends TextWebSocketHandler {
 	@Override // 연결 했을때
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 			System.out.printf("%s 연결됨\n",session.getId());
-//			Principal principal = session.getPrincipal();
-//			System.out.println(principal.toString());
-//			System.out.println(principal.getName());
-			System.out.println("연결 끝");
 	}
 
 	@Override // 연결 끊을때
@@ -57,12 +52,10 @@ public class WebSocketOmokHandler extends TextWebSocketHandler {
 //		System.out.println(principal.toString());
 //		System.out.println(principal.getName());
 //		System.out.println(status.toString());
-//		System.out.println(status.getReason());
 		
 		OmokRoomDTO room = omokService.quitRoom(session, status);
 		System.out.println(room.toString());
 		
-		omokService.findEnemyPlayer(session.getPrincipal().getName(), room.getRoomID());
 		UserTable sender = userService.getUserInfo(session.getPrincipal().getName());
 		Set<WebSocketSession> sessions = room.getSessions();
 		
@@ -72,20 +65,15 @@ public class WebSocketOmokHandler extends TextWebSocketHandler {
 		transferMessage.setSender(sender.getUserNum());
 		
 		sendToEachSocket(sessions, new TextMessage(objectMapper.writeValueAsString(transferMessage)));
-		
-		System.out.println("끊김 끝");
-		
+
+		// System.out.println(status.getReason());
 		// 그냥 뒤로가기 눌렀을때
 		// CloseStatus[code=1001, reason=null]
-		
 		// 서버 중단했을때
 		// CloseStatus[code=1001, reason=The web application is stopping]
-		
 		// 창을 닫을때
 		// CloseStatus[code=1001, reason=null]
 		
-		
-//		new TextMessage(objectMapper.writeValueAsString(transferMessage))
 	}
 	
 	@Override
@@ -123,8 +111,26 @@ public class WebSocketOmokHandler extends TextWebSocketHandler {
 			sendToEachSocket(sessions,message);
 		} else if (transferMessage.getType().equals(TransferMessage.messageType.PLACE)) {
 			// 메시지 타입이 PLACE(착수)의 경우
-			omokService.placedStone(transferMessage);
-			sendToEachSocket(sessions,message);
+			if (room.getSessions().size()!=2) {
+				TransferMessage newMessage = messageSetting(
+						"TALK", transferMessage.getRoomID()
+						, transferMessage.getSender()
+						, "아직 상대방이 들어오지 않았습니다");
+				sendToEachSocket(sessions, new TextMessage(objectMapper.writeValueAsString(newMessage)));
+			} else {
+				omokService.placedStone(transferMessage);
+				sendToEachSocket(sessions,message);
+			}
+			
+		} else if (transferMessage.getType().equals(TransferMessage.messageType.GIVEUP)) {
+			Boolean result = omokService.giveUp(transferMessage);
+			if (result==true) {
+				sendToEachSocket(sessions,message);
+			}
+		} else if (transferMessage.getType().equals(TransferMessage.messageType.WIN)) {
+			System.out.println("승리 받았고");
+			System.out.println(transferMessage.toString());
+			omokService.gameWin(transferMessage);
 		}
 	}
 	
@@ -140,6 +146,20 @@ public class WebSocketOmokHandler extends TextWebSocketHandler {
 		});;
 	
 	}
+	
+	private TransferMessage messageSetting(String type, String roomID
+			, Integer sender, String message) {
+		TransferMessage transferMessage = new TransferMessage();
+		if (type == "TALK") {
+			transferMessage.setType(messageType.TALK);
+		}
+		transferMessage.setRoomID(roomID);
+		transferMessage.setSender(sender);
+		transferMessage.setMessage(message);
+		
+		return transferMessage;
+	}
+	
 	
 	
 }
