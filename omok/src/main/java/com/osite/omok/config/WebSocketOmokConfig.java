@@ -5,7 +5,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-import com.osite.omok.handler.WebSocketOmokHandler;
+import com.osite.omok.handler.OmokSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSocketOmokConfig implements WebSocketConfigurer {
 	
-	private final WebSocketOmokHandler webSocketHandler;
+	private final OmokSocketHandler webSocketHandler;
 	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {

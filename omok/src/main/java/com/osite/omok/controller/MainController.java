@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.osite.omok.service.TestService;
 import com.osite.omok.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ public class MainController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TestService testService;
 	
 	@GetMapping("/")
 	public String main(Principal principal, Model model) {
@@ -49,7 +53,15 @@ public class MainController {
 	
 
 	@GetMapping("/test")
-	public String testPage() {
+	public String testPage(Principal principal) {
+		try {
+			String username = principal.getName();
+			testService.testMapper(username);
+		} catch (Exception e) {
+			// TODO: handle exception
+			testService.testMapper("aaa");
+			System.out.println("catch");
+		}
 		return "test";
 	}
 

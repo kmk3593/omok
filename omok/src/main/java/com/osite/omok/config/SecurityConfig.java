@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	
+	
 	private final AuthenticationSuccessHandler authenticationSuccessHandler;
 	
     @Bean

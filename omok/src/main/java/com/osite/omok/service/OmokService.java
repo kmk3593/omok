@@ -159,8 +159,6 @@ public class OmokService {
 		String roomID = null;
 //		String sessionID = session.getId();
 		
-//		System.out.println(sessionID);
-		
 		System.out.println(omokRooms.size());
 		
 		Set<String> keys = omokRooms.keySet();
@@ -191,44 +189,85 @@ public class OmokService {
 			omokOrderRepository.deleteBygameNum(targetOmokSetting);
 			omokSettingRepository.deleteByroomID(roomID);
 		}
-		
-		// 평범하게 사용자가 종료한 상황
-		if(status.getReason() == null) {
-			// 해당 세션 지우기 + 세션 갯수로 구분?해서 승패 지정?
-			omokRoom.getSessions().remove(session);
-			// 내가 갖고있는 데이터 : 
-			// roomID, session.getPrincipal(), omokRoom
-			
-			// 남은 세션이 1개인 경우   <--- 여기서 시작하면 됨
-			if (omokRoom.getSessions().size() == 1) {
-				System.out.println("남은 사용자에게 승리메세지를 보내고 승자패자를 기록하면 됨");
-			} else if (omokRoom.getSessions().size() == 0) {
-				// 남은 세션이 0개인 경우 // 세션이 하나만 있었던 경우
-//				omokSettingRepository  
-				System.out.println("남은 사용자가 없고 세션 지웠으니까 끝나는듯?");
-			}
-			
-		} else {
-			System.out.println("서버가 중단한 경우");
-		}
-		
+		omokRoom.getSessions().remove(session);
 		
 		return omokRoom;
 	}
 	
-	public UserTable findEnemyPlayer(String username, String roomID) {
+//	public UserTable findEnemyPlayer(String username, String roomID) {
+//		// TODO Auto-generated method stub
+//		Optional<UserTable> optionalUserTable = userTableRepository.findByusername(username);
+//		UserTable user = optionalUserTable.get();
+//		
+//		OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
+//		if(omokSetting.getBlackStone().equals(user)) {
+//			return omokSetting.getWhiteStone();
+//		} else{
+//			return omokSetting.getBlackStone();
+//		}
+//	}
+	
+	public void gameWin(TransferMessage transferMessage) {
 		// TODO Auto-generated method stub
-		Optional<UserTable> optionalUserTable = userTableRepository.findByusername(username);
-		UserTable user = optionalUserTable.get();
+		OmokSetting setting = omokSettingRepository.findByroomID(transferMessage.getRoomID());
 		
-		OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
-		if(omokSetting.getBlackStone().equals(user)) {
-			return omokSetting.getWhiteStone();
-		} else{
-			return omokSetting.getBlackStone();
+		UserTable sender = userTableRepository.findByuserNum(transferMessage.getSender());
+		System.out.println("승리함수");
+		System.out.println(sender.toString());
+		System.out.println(setting.getBlackStone().toString());
+		System.out.println(setting.getWhiteStone().toString());
+		if (setting.getBlackStone().getUserNum() == transferMessage.getSender()) {
+			updateGameResult(setting.getBlackStone(), setting.getWhiteStone());
+		}else if (setting.getWhiteStone().getUserNum() == transferMessage.getSender()) {
+			updateGameResult(setting.getWhiteStone(), setting.getBlackStone());
 		}
 	}
+
+	public Boolean giveUp(TransferMessage transferMessage) {
+		// TODO Auto-generated method stub
+		OmokRoomDTO targetRoom = omokRooms.get(transferMessage.getRoomID());
+		OmokSetting targetSetting = omokSettingRepository.findByroomID(transferMessage.getRoomID());
+		
+		if (targetSetting.getBlackStone().getUserNum()==transferMessage.getSender() &&
+			targetSetting.getWhiteStone() != null){
+			UserTable winner = userTableRepository.findByuserNum(targetSetting.getWhiteStone().getUserNum());
+			UserTable loser = userTableRepository.findByuserNum(targetSetting.getBlackStone().getUserNum());
+			
+			return updateGameResult(winner, loser);
+		}else if (targetSetting.getWhiteStone().getUserNum()==transferMessage.getSender() &&
+			targetSetting.getBlackStone() != null) {
+			UserTable winner = userTableRepository.findByuserNum(targetSetting.getBlackStone().getUserNum());
+			UserTable loser = userTableRepository.findByuserNum(targetSetting.getWhiteStone().getUserNum());
+			
+			return updateGameResult(winner, loser);
+		}else {
+			return false;
+		}
+		
+	}
 	
-	
+	public boolean updateGameResult(UserTable winner, UserTable loser) {
+		try {
+			Integer winLate = winner.getWinLate();
+			Integer loseLate = loser.getLoseLate();
+			if (winLate == null) {
+				winLate = 0;
+			}
+			if (loseLate == null) {
+				loseLate = 0;
+			}
+			System.out.println("승자 승리 예정 수");
+			System.out.println(winLate+1);
+			winner.setWinLate(winLate+1);
+			userTableRepository.save(winner);
+			loser.setLoseLate(loseLate+1);
+			userTableRepository.save(loser);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+		
+	}
 	
 }
