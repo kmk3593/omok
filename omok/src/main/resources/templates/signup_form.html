@@ -17,35 +17,44 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 		</div> 
 		<form th:action="@{/user/signup}"  onsubmit="return validateForm()" th:object="${userCreateForm}" method="post">
 			<div class="mb-3">
-				<label for="username" class="form-label">ID</label>
+				<label for="inputID" class="form-label">ID</label>
 				<input id="inputID" type="text" th:field="*{username}" class="form-control">
 				<label color="blue"> 영어, 숫자 10글자 이내</label>
+				<input type="button" id="sameCheck" value="중복검사"/>
 			</div>
 			<div class="mb-3">
-				<label for="password1" class="form-label">비밀번호</label>
+				<label for="inputPass" class="form-label">비밀번호</label>
 				<input id="inputPass" type="text" th:field="*{password1}" class="form-control">
 				<label color="blue"> 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하 </label>
 			</div>
 			<div class="mb-3">
-				<label for="password2" class="form-label">비밀번호 확인</label>
+				<label for="inputConf" class="form-label">비밀번호 확인</label>
 				<input id="inputConf" type="text" th:field="*{password2}" class="form-control">
 				<label color="blue"> 이하 동문</label>
 			</div> 
 			<div class="mb-3">
-				<label for="nickname" class="form-label">닉네임</label>
+				<label for="inputNick" class="form-label">닉네임</label>
 				<input id="inputNick" type="text" th:field="*{nickname}" class="form-control">
 				<label color="blue"> 한글, 영어, 숫자 10글자 이하</label>
 			</div>	
-			<button type="submit" class="btn btn-primary">회원가입</button>
+			
+			<button type="submit" class="btn btn-primary">회원가입</button>	
+
 		</form>
 	</div>
 	
 <script type="text/javascript">
 
-	var regexID;
-	var regexPass;
-	var regexCinf;
-	var regexNick;
+	var duplicateCheck = false;
+
+	//대소문자 구분 없음. 영어, 숫자. 10 글자 이하
+	var regexID = /^[a-zA-Z0-9]{1,10}$/;
+	// 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하
+	var regexPass = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
+	// 비밀 번호 확인. 이하 동문.
+	var regexConf = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
+	// 한글 또는 영어 또는 숫자. 10글자 이하	
+	var regexNick = /^[a-zA-Z0-9가-힣]{1,10}$/;
 	
 	let goodSignup = false;
 
@@ -66,6 +75,7 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 		
 		// 대문자를 소문자로 변환
 	  	const processedString = signupID.toLowerCase();
+		// alert("same check = " + duplicateCheck);
 		console.log("signupID = " + signupID + " & 변환 = " + processedString);
 		inputID.value = processedString;
 		
@@ -81,33 +91,40 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 		}else if(!regexNick.test(signupNick)){
 			alert("잘못된 Nickname : " + signupNick);
 			
+		}else if(duplicateCheck==false){
+			alert("중복된 ID : " + duplicateCheck);
 		}else{
 			alert("똑똑한 ID : " + signupID);
 			goodSignup = true;
 		}   
 	 	return goodSignup;
 	}
-
-	$(document).ready(function(){
-		
-		
-		// ID 제한
-		// 대소문자 구분 없음. 영어, 숫자. 10 글자 이하
-		regexID = /^[a-zA-Z0-9]{1,10}$/; 
-
-		// 비밀번호 제한
-		// 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하
-		regexPass = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
-		
-		// 비밀번호 확인 제한
-		// 이하 동문
-		regexConf = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
-		
-		// 닉네임 제한
-		// 한글 또는 영어 또는 숫자. 10글자 이하	
-		regexNick = /^[a-zA-Z0-9가-힣]{1,10}$/;
 	
-	})
+	$("#sameCheck").click(function(){
+		
+		// 데이터를 세팅한다. json 형식을 많이 사용한다. 
+		var params = {
+				username	: $("#inputID").val()
+			//	, nickname	: $("#inputNick").val()
+		}
+		
+		// ajax 통신
+		$.ajax({
+			type: "POST",
+			url:"/user/duplicate/check/id",
+			data : params,
+			success : function(same){
+				alert("true || false -> " + same);
+				duplicateCheck = same;
+
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				alert("통신 실패");
+			}
+		});		
+	});
+	
+
 </script>	
 	
 </body>

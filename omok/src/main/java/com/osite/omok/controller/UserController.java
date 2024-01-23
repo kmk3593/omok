@@ -5,8 +5,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.osite.omok.dto.UserCreateForm;
+import com.osite.omok.entity.UserTable;
 import com.osite.omok.service.UserService;
 
 import jakarta.validation.Valid;
@@ -44,6 +46,30 @@ public class UserController {
 	@GetMapping("/login")
 	public String login() {
 		return "login_form";
+	}
+	
+	@PostMapping("/duplicate/check/id")
+	@ResponseBody
+	public Boolean sameCheck(UserTable userTable) {
+		
+		Boolean same = true; 
+		
+		String username = userTable.getUsername();
+		
+		System.out.println("=-===입력한 id = " + username);
+		
+		if(userService.getUser(username) == null){
+			
+			System.out.println("=-===입력한 id로 검색한 유저정보 = " + userService.getUser(username));
+			
+		}else {
+			
+			same = false;
+			
+		}
+		
+		return same;
+		
 	}
 
 	
