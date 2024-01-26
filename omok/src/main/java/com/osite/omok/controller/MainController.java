@@ -2,12 +2,17 @@ package com.osite.omok.controller;
 
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.osite.omok.entity.Board;
+import com.osite.omok.repository.BoardRepository;
+import com.osite.omok.service.BoardService;
 import com.osite.omok.service.TestService;
 import com.osite.omok.service.UserService;
 
@@ -22,6 +27,12 @@ public class MainController {
 	
 	@Autowired
 	private TestService testService;
+	
+	@Autowired
+	private BoardRepository boardRepository;
+	
+	@Autowired
+	private BoardService boardService;
 	
 	@GetMapping("/")
 	public String main(Principal principal, Model model) {
@@ -44,19 +55,37 @@ public class MainController {
 		return "main_form";
 	}
 	
-
-//	@GetMapping("hello")
-//	@ResponseBody  /* 객체 반환.  이거 없으면 return에 적힌 html 페이지를 찾아감 */
-//	public String hello() {
-//		return "HELLO WORLD 7777";
-//	}
+	@GetMapping("/board")
+	public String getAllBoardList(Model model) {
+		
+		List<Board> boardList = boardRepository.findAll();
+		model.addAttribute("boardList", boardList);
+		
+		return "board_form";
+		
+	}
 	
+	@GetMapping("/board/create")
+	public String createPage() {
+		
+		return "board_create";
+		
+	}
+	
+	@PostMapping("/board/create")
+	public String createBoard(Board board, Principal principal) {
+		
+		boardService.boardCreate(board.getTitle(), board.getText(), principal);
+		
+		return "redirect:/board";
+	}
+
 
 	@GetMapping("/test")
 	public String testPage(Principal principal) {
 		try {
 			String username = principal.getName();
-			testService.testMapper(username);
+			System.out.println(testService.testMapper(username));
 		} catch (Exception e) {
 			// TODO: handle exception
 			testService.testMapper("aaa");

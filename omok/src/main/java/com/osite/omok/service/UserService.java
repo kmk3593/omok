@@ -43,7 +43,6 @@ public class UserService {
 	public UserTable getUser(String username) {
 		
 		Optional<UserTable> _userTable = userRepository.findByusername(username);
-		System.out.println("++++++++++++++++" + _userTable);
 		
 		if(_userTable.isEmpty()) {
 			return null;

@@ -48,29 +48,24 @@ public class UserController {
 		return "login_form";
 	}
 	
+	/**
+	 * 회원 가입 시, ID 중복 체크
+	 * 
+	**/	
 	@PostMapping("/duplicate/check/id")
 	@ResponseBody
 	public Boolean sameCheck(UserTable userTable) {
 		
 		Boolean same = true; 
-		
 		String username = userTable.getUsername();
 		
-		System.out.println("=-===입력한 id = " + username);
-		
 		if(userService.getUser(username) == null){
-			
 			System.out.println("=-===입력한 id로 검색한 유저정보 = " + userService.getUser(username));
 			
 		}else {
-			
 			same = false;
-			
 		}
 		
 		return same;
-		
 	}
-
-	
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>제목</title>
+<!-- jquery 최신버전 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+	<h1>게시글 작성</h1>
+	<form th:action="@{/board/create}" method="post">
+        <div>
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title">
+        </div>
+        <div>
+            <label for="text">내용</label>
+            <textarea cols="50" rows="10" id="text" name="text"></textarea>
+        </div>
+        <button type="submit">작성하기</button>
+	</form>
+</body>
+</html>
