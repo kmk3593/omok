@@ -9,9 +9,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+//github.com/kmk3593/omok.git
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.Thymeleaf;
 
 import com.osite.omok.entity.Board;
 import com.osite.omok.entity.UserTable;
@@ -26,7 +26,6 @@ public class TestService {
 
 	@Autowired
 	private TestMapper testMapper;
-	
 	@Autowired
 	private UserTableRepository userTableRepository;
 	
@@ -70,46 +69,6 @@ public class TestService {
 		System.out.println("끝 : "+board2.toString());
 	}
 	
-	
-	
-//	public void KoGPT() {
-//		
-//		try {
-//			String api = "b3d13b51d101291ffb41547e4f562fcf";
-//            // KoGPT API 엔드포인트 URL
-//            String apiUrl = "https://api.kakaobrain.com/v1/inference/kogpt/generation"+"/"+api;
-//
-//            // KoGPT API에 보낼 데이터
-//            String requestData = "{\"input\":\"안녕하세요, 대화 내용을 입력하세요.\"}";
-//
-//            // HTTP POST 요청 보내기
-//            URL url = new URL(apiUrl);
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setRequestMethod("POST");
-//            connection.setRequestProperty("Content-Type", "application/json");
-//            connection.setDoOutput(true);
-//
-//            connection.getOutputStream().write(requestData.getBytes());
-//
-//            // 응답 읽기
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            String line;
-//            StringBuilder response = new StringBuilder();
-//
-//            while ((line = reader.readLine()) != null) {
-//                response.append(line);
-//            }
-//
-//            // API 응답 출력
-//            System.out.println("API 응답: " + response.toString());
-//
-//            // 연결 종료
-//            connection.disconnect();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//	}
 	
 	public void testGPT() {
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()) {

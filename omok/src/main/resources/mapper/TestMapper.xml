@@ -2,13 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.osite.omok.mapper.TestMapper">
 
-	<select id="testByID" resultType="UserTable" parameterType="String">
+	<select id="testByID" resultType="UserTable">
         SELECT 
         	* 
         FROM 
         	user_table
-        where
-        	username='qqq';  
     </select>
     
     <select id="selectBoard" resultType="Board" parameterType="Board">

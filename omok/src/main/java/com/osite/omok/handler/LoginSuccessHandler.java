@@ -28,11 +28,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 			Authentication authentication) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		
-		System.out.println("전전=================");
-		
 		User user = (User) authentication.getPrincipal();
-		
-		System.out.println("후후=================");
+
  
 		LocalDateTime nowTime = LocalDateTime.now(); 
 		
