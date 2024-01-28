@@ -6,8 +6,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.osite.omok.dto.BoardDetialDTO;
 import com.osite.omok.entity.Board;
 import com.osite.omok.entity.UserTable;
+import com.osite.omok.mapper.BoardMapper;
+import com.osite.omok.mapper.UserTableMapper;
 import com.osite.omok.repository.BoardRepository;
 import com.osite.omok.repository.UserTableRepository;
 
@@ -19,6 +22,8 @@ public class BoardService {
 	
 	private final BoardRepository boardRepository;
 	private final UserTableRepository userTableRepository;
+	private final BoardMapper boardMapper;
+	private final UserTableMapper userTableMapper;
 	
 	/**
 	 * 게시글 작성 
@@ -29,17 +34,38 @@ public class BoardService {
 		board.setTitle(title);
 		board.setText(text);
 		
-		// principal을 통해 로그인된 id를 획득. id를 통해 테이블 객체를 얻어 board에 set.
+		// principal을 통해 로그인한 유저의 id를 획득.
 		Optional<UserTable> _userTable = userTableRepository.findByusername(principal.getName());
 		UserTable userTable = _userTable.get();
-		board.setUsernum(userTable);
+		board.setWriter(userTable);
 		
 		// 현재 시간 저장
 		LocalDateTime createTime = LocalDateTime.now();
 		board.setWriteDateTime(createTime);
 		
-		// 게시글 내용을 create
-		boardRepository.save(board);
+		// jpaRepository 사용한 버전
+//		boardRepository.save(board);
 		
+		// myBatis 사용한 버전
+		boardMapper.insertBoard(board);
+		
+	}
+	
+	/**
+	 * 	게시글 상세 보기
+	 * @throws Exception 
+	**/
+	public Board getBoardDetail(Integer boardNum){
+		
+		// jpaRepository 사용한 버전
+//		Board board = boardRepository.findByboardNum(boardNum);
+		
+		// myBatis 사용한 버전
+		BoardDetialDTO boardDetail = boardMapper.getBoardDetail(boardNum);
+		Board board = boardDetail; 
+		UserTable userTable = userTableMapper.findByUserNum(boardDetail.getWriterUserNum());
+		board.setWriter(userTable);
+		
+		return board;
 	}
 }

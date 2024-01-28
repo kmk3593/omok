@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.osite.omok.mapper.BoardMapper">
+
+ 	 <insert id="insertBoard" parameterType="com.osite.omok.entity.Board">
+		INSERT INTO board (title, text, writer_user_num, write_date_time) 
+		VALUES (#{title}, #{text}, #{writer.userNum}, #{writeDateTime})
+	</insert>  
+
+ 	 <select id="getBoardDetail" resultType="com.osite.omok.dto.BoardDetialDTO">
+		SELECT 
+			*
+		FROM
+			board
+		WHERE 
+			board_num = #{boardNum};
+	</select>  
+
+</mapper>
