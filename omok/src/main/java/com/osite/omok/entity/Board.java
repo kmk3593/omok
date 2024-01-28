@@ -10,10 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Board {
 
 	// 인식 번호
@@ -31,7 +33,7 @@ public class Board {
 	
 	// 작성자
 	@ManyToOne
-	private UserTable usernum;
+	private UserTable writer;
 
 	// 작성일시
 	private LocalDateTime writeDateTime;

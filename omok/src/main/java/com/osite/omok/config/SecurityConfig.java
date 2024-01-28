@@ -43,7 +43,11 @@ public class SecurityConfig {
             	                    .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
             	                    .logoutSuccessUrl("/")
             	                    .invalidateHttpSession(true))
-            	            .csrf().disable()
+            	            .csrf()
+            	            	.disable()
+//            	            .ignoringRequestMatchers(
+//            	                    new AntPathRequestMatcher("/h2-console/**"))
+            	            
             ;
         return http.build();
     }
