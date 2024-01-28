@@ -1,11 +1,11 @@
-package com.osite.omok.entity;
+package com.osite.omok.dto;
 
 import java.time.LocalDateTime;
 
-import com.osite.omok.dto.BoardDetialDTO;
+import com.osite.omok.entity.Board;
+import com.osite.omok.entity.UserTable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,30 +14,24 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @Getter
 @Setter
-@ToString
-public class Board {
-
+public class BoardDetialDTO extends Board{
+	
 	// 인식 번호
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer boardNum;
 	
 	// 제목
-	@Column(length = 30)
 	private String title;
 	
 	// 본문
-	@Column(columnDefinition = "TEXT")
 	private String text;
 	
 	// 작성자
-	@ManyToOne
-	private UserTable writer;
+	private Integer writerUserNum;
 
 	// 작성일시
-	private LocalDateTime writeDateTime;	
+	private LocalDateTime writeDateTime;
+
 	
 }

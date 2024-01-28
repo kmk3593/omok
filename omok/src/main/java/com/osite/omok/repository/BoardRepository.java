@@ -6,4 +6,6 @@ import com.osite.omok.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Integer>{
 
+	Board findByboardNum(Integer boardNum);
+	
 }
