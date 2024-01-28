@@ -32,7 +32,7 @@ public class BoardService {
 		// principal을 통해 로그인된 id를 획득. id를 통해 테이블 객체를 얻어 board에 set.
 		Optional<UserTable> _userTable = userTableRepository.findByusername(principal.getName());
 		UserTable userTable = _userTable.get();
-		board.setUsernum(userTable);
+		board.setWriter(userTable);
 		
 		// 현재 시간 저장
 		LocalDateTime createTime = LocalDateTime.now();
