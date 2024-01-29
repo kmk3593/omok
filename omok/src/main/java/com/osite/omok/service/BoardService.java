@@ -27,7 +27,6 @@ public class BoardService {
 	
 	/**
 	 * 게시글 작성 
-	 * 
 	**/
 	public void boardCreate(String title, String text, Principal principal) {
 		Board board = new Board();
@@ -53,7 +52,6 @@ public class BoardService {
 	
 	/**
 	 * 	게시글 상세 보기
-	 * @throws Exception 
 	**/
 	public Board getBoardDetail(Integer boardNum){
 		
@@ -68,4 +66,30 @@ public class BoardService {
 		
 		return board;
 	}
+	
+	/**
+	 *	게시글 삭제하기
+	*/
+	public void deleteBoard(Integer boardNum) {
+		
+		boardMapper.deleteBoard(boardNum);
+		
+	}
+	
+	/**
+	 * 	게시글 수정하기
+	*/
+	public void updateBoard(Integer boardNum, String title, String text) {
+		
+		Board board = new Board();
+		board.setBoardNum(boardNum);
+		board.setText(text);
+		board.setTitle(title);
+		
+		// 시간도 갱신해야 할까
+		
+		boardMapper.updateBoard(board);
+		
+	}
+	
 }

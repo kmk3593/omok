@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+    <style>
+        /* 버튼 스타일 */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid #3498db;
+            color: #3498db;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        /* 버튼 호버 효과 */
+        .button:hover {
+            background-color: #3498db;
+            color: white;
+        }
+    </style> 
+<title>제목</title>
+<!-- jquery 최신버전 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+	
+	<p>
+	<label>제목 : </label>
+	<label th:text="${viewDetail.title}"></label>
+	
+	<a th:href="@{|/board/updating/${viewDetail.boardNum}|}" class="button">수정</a>
+	<a th:href="@{|/board/delete/${viewDetail.boardNum}|}" class="button">삭제</a>
+	</p>
+	
+	<p>
+	<label>작성자 : </label>
+	<label th:text="${viewDetail.writer.nickname}"></label>
+	</p>
+
+	<p>
+	<label>작성일자</label>  
+ 	<label th:text="${viewDetail.writeDateTime}"></label>
+ 	</p>
+ 	
+ 	<p>
+ 	<label>내용</label>
+	<textarea th:text="${viewDetail.text}"></textarea>
+	</p>
+	
+
+	<div>
+		<a href="/board">
+			<button>게시글 목록</button>
+		</a>
+	</div>
+	
+</body>
+</html>

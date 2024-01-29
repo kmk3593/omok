@@ -7,7 +7,25 @@ import com.osite.omok.entity.Board;
 
 @Mapper
 public interface BoardMapper {
+	
+	/**
+	 *	게시글 작성 
+	**/
 	void insertBoard(Board board);
 	
+	/**
+	 * 	게시글 상세보기
+	**/
 	BoardDetialDTO getBoardDetail(Integer boardNum);
+	
+	/**
+	 * 	게시글 삭제하기
+	*/
+	void deleteBoard(Integer boardNum);
+	
+	/**
+	 * 	게시글 수정하기
+	*/
+	void updateBoard(Board board);
+	
 }
