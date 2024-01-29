@@ -55,7 +55,7 @@ public class OmokController {
     }
 	
 	@GetMapping(value = "/omok/omokroom/{roomID}")
-	public String getMethodName(Model model
+	public String enterOmokRoom(Model model
 			, @PathVariable(name = "roomID") String roomID
 			, Authentication authentication) {
 		

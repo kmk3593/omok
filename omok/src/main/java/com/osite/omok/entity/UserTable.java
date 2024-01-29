@@ -1,14 +1,14 @@
 package com.osite.omok.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.annotations.ColumnDefault;
-
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -42,5 +42,6 @@ public class UserTable {
 	
 	// 최종 로그인 날짜
 	private LocalDateTime lastLoginDate;
+	
 
 }

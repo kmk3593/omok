@@ -10,7 +10,8 @@ const MAX_COL = 15;
 var intersections;
 var myStone
 var playerNumber;
-var countDown = 5;
+var countDownLimit = 30;
+var countDown = countDownLimit;
 let timerOn = setInterval(playTimer, 1000)
 
 // JQuery
@@ -39,6 +40,11 @@ $(document).ready(function(){
 			intersection.setAttribute('onmouseout', "this.style.backgroundColor=''")
 			intersection.dataset.row = i;
 			intersection.dataset.col = j;
+			
+			var textNode = document.createTextNode("10");
+			intersection.appendChild(textNode);
+			intersection.setAttribute("style", "color: white;")
+			
 			board.appendChild(intersection);
 			intersections.push(intersection);
 		}
@@ -60,8 +66,6 @@ $(document).ready(function(){
 		/* console.log(transferMessage.message); */
 		  
 		if(transferMessage.type == "PLACE"){
-			/* console.log(transferMessage.xLine); */
-			/* console.log(transferMessage.yLine); */
 			placeStone(transferMessage.xLine, transferMessage.yLine);
 			var turn = $("#turn").val();
 			placedStoneSound.play();
@@ -147,8 +151,6 @@ $(document).ready(function(){
 });
 
 function enterRoom(webSocket){
-	/* console.log(roomID); */
-	/* console.log(userNum); */
 	var enterMessage = {
 		"type" : "ENTER",
 		"roomID" : roomID,
@@ -221,12 +223,7 @@ function inputEnterKey(e){
  * by Woobin
  */
 function checkWinner(xLine, yLine, turn){
-	// console.log(xLine)
-	// console.log(yLine)
-	// console.log(turn)
 	var board = convertDoubleList(MAX_COL, MAX_ROW, intersections);
-	// console.log(board)
-	 
 	
 	// 가로, 세로, 우상향, 우하향 방향 순으로 체크
 	if(checkDirection(board, xLine, yLine, turn, 1, 0) ||
@@ -350,6 +347,7 @@ function playerNumberCheck(){
 function playTimer(){
 	
 	makeCountDownClock(countDown)
+	
 	if(countDown == 0){
 		// 시간 제한을 다하면 알림
 		clearInterval(timerOn);
@@ -376,7 +374,7 @@ function makeCountDownClock(sec){
 function timerReload(){
 	// 돌을 놓으면 타이머를 재시작
 	clearInterval(timerOn);
-	countDown = 5;
+	countDown = countDownLimit;
 	timerOn = setInterval(playTimer, 1000);	
 }
 

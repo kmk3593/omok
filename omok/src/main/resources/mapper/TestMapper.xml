@@ -8,5 +8,23 @@
         FROM 
         	user_table
     </select>
+    
+    <select id="selectBoard" resultType="Board" parameterType="Board">
+        SELECT 
+        	* 
+        FROM 
+        	board
+        where
+        	writer_user_num = #{writer.userNum};
+    </select>
+    
+    
+    
+    <insert id="insertTest" parameterType="Board">
+	    insert into board (title, text, write_date_time, user_table_user_num)
+	    values (#{title}, #{text}, #{writeDateTime}, 1);
+    </insert>
+    
+    
 
 </mapper>

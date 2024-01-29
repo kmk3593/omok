@@ -2,12 +2,14 @@ package com.osite.omok.controller;
 
 import java.security.Principal;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.osite.omok.dto.TransferMessage;
 import com.osite.omok.service.TestService;
 import com.osite.omok.service.UserService;
 
@@ -57,6 +59,15 @@ public class MainController {
 		}
 		return "test";
 	}
-
+	
+	@PostMapping("/test/ajax")
+	@ResponseBody
+	public String ajaxTest(TransferMessage transferMessage) {
+		System.out.println(transferMessage);
+		testService.mapperInsert();
+		testService.mapperSelect();
+		return "good";
+	}
+	
 	
 }
