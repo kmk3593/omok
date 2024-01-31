@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
 	<!-- 로그인 정보가 있을경우 나타낼 화면 -->
 	<th:block sec:authorize="isAuthenticated()">
 		<form th:action="@{/omok/create/room}" method="post">
@@ -26,6 +25,7 @@
 		    </tr>
 		</table>
 	</th:block>
+	
 	<!-- 로그인 정보가 없을경우 로그인을 요구할것 -->
 	<th:block sec:authorize="isAnonymous()">
 		<a class="nav-link" th:href="@{/user/login}">로그인</a>

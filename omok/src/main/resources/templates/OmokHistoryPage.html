@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>오목 결과</title>
+<!-- jquery 최신버전 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<link th:href="@{/css/omokHistoryPage.css}" rel="stylesheet" type="text/css"/>
+<script th:src="@{/js/omokHistoryPage.js}" th:inline="javascript" type="text/javascript"></script>
+</head>
+<body>
+
+	<div class="board_space">
+		<div class="back_space" id="board_space"></div>
+		<div class="back_board" id="back_board"></div>
+		<div class="stone_board" id="stone_board"></div>
+	</div>
+	
+	<div class="function_space">
+		
+		<th:block th:if="${not #strings.isEmpty(user)}">
+			<input class="comment" id="comment" placeholder="의견 달기">
+			<button type="button" onclick="saveComment()">저장</button>
+			<input id="gameNum" th:value="${setting.gameNum}">
+			<div sec:authorize="isAuthenticated()">
+			<input id="userNum" th:value="${user.userNum}" >
+			</div>
+		</th:block>
+		
+		<div class="commentArea">
+			<div>--코멘트 목록--</div>
+			<div th:each="comment : ${comments}">
+				<!-- || 안에 작성하면 text 수정 가능  -->
+				<span th:text="|${comment.userNum.nickname} : ${comment.comment}"></span>
+				<span th:id="'updateButton_'+${comment.historyCommentNum}" th:if="${user} != null and ${comment.userNum.userNum == user.userNum}">
+					<button type="button" th:onclick="updeteOn([[${comment.historyCommentNum}]])">수정</button>
+					<button type="button" th:onclick="deleteComment([[${comment.historyCommentNum}]])">삭제</button>
+				</span>
+				<div class="updateBlock" th:id="'updateBlock_'+${comment.historyCommentNum}">
+					<input th:id="'updateText_'+${comment.historyCommentNum}" placeholder="수정 내용">
+					<button th:onclick="updateComment([[${comment.historyCommentNum}]])">수정하기</button>
+					<button th:onclick="updateOff()">취소</button>
+				<div>
+			</div>
+		</div>
+		
+	</div>
+	
+	    
+	
+	<script th:inline="javascript">
+	
+		orders = [[${orders}]];
+		setting = [[${setting}]];
+		comments = [[${comments}]];
+		console.log(orders);
+		console.log(setting);
+		console.log(comments);
+		
+	</script>
+
+</body>
+</html>

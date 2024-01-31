@@ -70,7 +70,7 @@ $(document).ready(function(){
 			var turn = $("#turn").val();
 			placedStoneSound.play();
 			if(checkWinner(Number(transferMessage.xLine)-1, Number(transferMessage.yLine)-1, turn)){
-				if(myStone == $("#turn").val()){
+				if(myStone == turn){
 					sendWinMessage();
 				}
 				gameWin();

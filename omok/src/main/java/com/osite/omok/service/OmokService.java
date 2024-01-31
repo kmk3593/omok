@@ -159,8 +159,6 @@ public class OmokService {
 		String roomID = null;
 //		String sessionID = session.getId();
 		
-		System.out.println(omokRooms.size());
-		
 		Set<String> keys = omokRooms.keySet();
 		
 		// 2중 for문 : session을 가지고 roomDto를 찾아내는 과정
@@ -217,9 +215,10 @@ public class OmokService {
 		System.out.println(setting.getBlackStone().toString());
 		System.out.println(setting.getWhiteStone().toString());
 		if (setting.getBlackStone().getUserNum() == transferMessage.getSender()) {
-			updateGameResult(setting.getBlackStone(), setting.getWhiteStone());
+			System.out.println("승리자 : "+setting.getBlackStone().getUserNum() +"/////"+ sender.getUserNum());
+			updateGameResult(setting, setting.getBlackStone(), setting.getWhiteStone());
 		}else if (setting.getWhiteStone().getUserNum() == transferMessage.getSender()) {
-			updateGameResult(setting.getWhiteStone(), setting.getBlackStone());
+			updateGameResult(setting, setting.getWhiteStone(), setting.getBlackStone());
 		}
 	}
 
@@ -233,20 +232,20 @@ public class OmokService {
 			UserTable winner = userTableRepository.findByuserNum(targetSetting.getWhiteStone().getUserNum());
 			UserTable loser = userTableRepository.findByuserNum(targetSetting.getBlackStone().getUserNum());
 			
-			return updateGameResult(winner, loser);
+			return updateGameResult(targetSetting, winner, loser);
 		}else if (targetSetting.getWhiteStone().getUserNum()==transferMessage.getSender() &&
 			targetSetting.getBlackStone() != null) {
 			UserTable winner = userTableRepository.findByuserNum(targetSetting.getBlackStone().getUserNum());
 			UserTable loser = userTableRepository.findByuserNum(targetSetting.getWhiteStone().getUserNum());
 			
-			return updateGameResult(winner, loser);
+			return updateGameResult(targetSetting, winner, loser);
 		}else {
 			return false;
 		}
 		
 	}
 	
-	public boolean updateGameResult(UserTable winner, UserTable loser) {
+	public boolean updateGameResult(OmokSetting setting, UserTable winner, UserTable loser) {
 		try {
 			Integer winLate = winner.getWinLate();
 			Integer loseLate = loser.getLoseLate();
@@ -256,8 +255,10 @@ public class OmokService {
 			if (loseLate == null) {
 				loseLate = 0;
 			}
-			System.out.println("승자 승리 예정 수");
-			System.out.println(winLate+1);
+			setting.setWinner(winner);
+			setting.setLoser(loser);
+			omokSettingRepository.save(setting);
+			
 			winner.setWinLate(winLate+1);
 			userTableRepository.save(winner);
 			loser.setLoseLate(loseLate+1);
@@ -268,6 +269,16 @@ public class OmokService {
 			return false;
 		}
 		
+	}
+
+	public boolean gameEndYN(String roomID) {
+		OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
+		if (omokSetting.getWinner() == null
+			&& omokSetting.getLoser() == null) {
+			return false;
+		}
+		// 승패자가 정해져있다면
+		return true;
 	}
 	
 }

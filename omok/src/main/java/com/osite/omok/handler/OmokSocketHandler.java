@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.osite.omok.dto.OmokRoomDTO;
 import com.osite.omok.dto.TransferMessage;
 import com.osite.omok.dto.TransferMessage.messageType;
+import com.osite.omok.entity.OmokSetting;
 import com.osite.omok.entity.UserTable;
 import com.osite.omok.service.OmokService;
 import com.osite.omok.service.UserService;
@@ -54,7 +55,10 @@ public class OmokSocketHandler extends TextWebSocketHandler {
 //		System.out.println(status.toString());
 		
 		OmokRoomDTO room = omokService.quitRoom(session, status);
-		System.out.println(room.toString());
+		if (omokService.gameEndYN(room.getRoomID())) {
+			return;
+		}
+		
 		
 		UserTable sender = userService.getUserInfo(session.getPrincipal().getName());
 		Set<WebSocketSession> sessions = room.getSessions();

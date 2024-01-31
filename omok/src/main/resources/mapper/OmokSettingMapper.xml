@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.osite.omok.mapper.OmokSettingMapper">
+
+	<select id="getAllOmokHistoryList" resultType="com.osite.omok.dto.SettingDTO">
+	
+		select 
+			* 
+		from
+			omok_setting
+		where not
+			winner_user_num is null
+		and not
+			loser_user_num is null;
+		
+	</select>
+	
+	<select id="findOmokSetting" resultType="com.osite.omok.dto.SettingDTO">
+	
+		select 
+			* 
+		from
+			omok_setting
+		where 
+			game_num = #{gameNum};
+		
+	</select>
+
+</mapper>

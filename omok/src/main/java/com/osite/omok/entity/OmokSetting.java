@@ -1,7 +1,5 @@
 package com.osite.omok.entity;
 
-import org.springframework.web.socket.WebSocketSession;
-
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
