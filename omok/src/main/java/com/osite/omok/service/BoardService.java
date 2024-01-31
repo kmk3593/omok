@@ -2,8 +2,14 @@ package com.osite.omok.service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.osite.omok.dto.BoardDetialDTO;
@@ -90,6 +96,17 @@ public class BoardService {
 		
 		boardMapper.updateBoard(board);
 		
+	}
+	
+	/**
+	 * 	페이징
+	 */
+	public Page<Board> getList(int page){
+		
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("writeDateTime"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		return boardRepository.findAll(pageable);
 	}
 	
 }

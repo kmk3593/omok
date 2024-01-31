@@ -4,13 +4,16 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.osite.omok.entity.Board;
 import com.osite.omok.repository.BoardRepository;
 import com.osite.omok.service.BoardService;
@@ -28,18 +31,32 @@ public class BoardController {
 	private BoardService boardService;
 	
 	/**
-	 * 		게시글 전체 조회 
+	 * 	게시글 목록 전체 조회 
+	*/
+//	@GetMapping("/board")
+//	public String getAllBoardList(Model model) {
+//		
+//		List<Board> boardList = boardRepository.findAll();
+//		model.addAttribute("boardList", boardList);
+//		
+//		return "board_form";
+//		
+//	}
+
+	/**
+	 *  게시글 목록.
+	 * 	그런데 게시글 페이징을 추가한. 
 	*/
 	@GetMapping("/board")
-	public String getAllBoardList(Model model) {
+	public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
 		
-		List<Board> boardList = boardRepository.findAll();
-		model.addAttribute("boardList", boardList);
-		
+		Page<Board> paging = boardService.getList(page);
+		model.addAttribute("boardList", paging);
 		return "board_form";
 		
 	}
-
+	
+	
 	/**
 	 * 게시글 작성 페이지로 이동
 	*/

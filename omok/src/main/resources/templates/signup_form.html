@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
@@ -9,7 +9,7 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 "></script>
 </head>
 <body>
-	<div> 
+	<div layout:fragment="content" class="container my-3"> 
 		<div>
 			<div>
 				<h4>회원가입</h4>
