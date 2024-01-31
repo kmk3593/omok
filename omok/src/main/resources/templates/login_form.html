@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-	<div>
+	<div layout:fragment="content" class="container my-3">
 	    <form th:action="@{/user/login}" method="post" onsubmit="return LowerForm();">
 	        <div th:if="${param.error}">
 	            <div class="alert alert-danger">
