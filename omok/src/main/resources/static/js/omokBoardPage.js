@@ -41,10 +41,6 @@ $(document).ready(function(){
 			intersection.dataset.row = i;
 			intersection.dataset.col = j;
 			
-			var textNode = document.createTextNode("10");
-			intersection.appendChild(textNode);
-			intersection.setAttribute("style", "color: white;")
-			
 			board.appendChild(intersection);
 			intersections.push(intersection);
 		}

@@ -21,9 +21,9 @@
 		<th:block th:if="${not #strings.isEmpty(user)}">
 			<input class="comment" id="comment" placeholder="의견 달기">
 			<button type="button" onclick="saveComment()">저장</button>
-			<input id="gameNum" th:value="${setting.gameNum}">
+			<input id="gameNum" th:value="${setting.gameNum}" hidden="hidden">
 			<div sec:authorize="isAuthenticated()">
-			<input id="userNum" th:value="${user.userNum}" >
+			<input id="userNum" th:value="${user.userNum}" hidden="hidden">
 			</div>
 		</th:block>
 		
@@ -53,9 +53,9 @@
 		orders = [[${orders}]];
 		setting = [[${setting}]];
 		comments = [[${comments}]];
-		console.log(orders);
+		/* console.log(orders);
 		console.log(setting);
-		console.log(comments);
+		console.log(comments); */
 		
 	</script>
 

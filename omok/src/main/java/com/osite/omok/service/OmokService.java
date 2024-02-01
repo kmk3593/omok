@@ -1,7 +1,6 @@
 package com.osite.omok.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,27 +182,19 @@ public class OmokService {
 		// 혼자 두고있던 order삭제, 들어가있던 setting을 삭제
 		if (omokRoom.getSessions().size() == 1) {
 			OmokSetting targetOmokSetting = omokSettingRepository.findByroomID(roomID);
-			
-			omokOrderRepository.deleteBygameNum(targetOmokSetting);
-			omokSettingRepository.deleteByroomID(roomID);
+			Integer gameNum = targetOmokSetting.getGameNum();
+			String key = targetOmokSetting.getRoomID();
+			System.out.println("------------");
+			System.out.println(gameNum);
+			System.out.println("------------");
+			omokSettingRepository.deleteById(gameNum);
+			omokRooms.remove(key);
+			System.out.println("+++++++++++++");
 		}
 		omokRoom.getSessions().remove(session);
 		
 		return omokRoom;
 	}
-	
-//	public UserTable findEnemyPlayer(String username, String roomID) {
-//		// TODO Auto-generated method stub
-//		Optional<UserTable> optionalUserTable = userTableRepository.findByusername(username);
-//		UserTable user = optionalUserTable.get();
-//		
-//		OmokSetting omokSetting = omokSettingRepository.findByroomID(roomID);
-//		if(omokSetting.getBlackStone().equals(user)) {
-//			return omokSetting.getWhiteStone();
-//		} else{
-//			return omokSetting.getBlackStone();
-//		}
-//	}
 	
 	public void gameWin(TransferMessage transferMessage) {
 		// TODO Auto-generated method stub
