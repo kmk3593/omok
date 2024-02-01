@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.osite.omok.dto.TransferMessage;
@@ -48,15 +49,11 @@ public class MainController {
 	
 
 	@GetMapping("/test")
-	public String testPage(Principal principal) {
-		try {
-			String username = principal.getName();
-			System.out.println(testService.testMapper(username));
-		} catch (Exception e) {
-			// TODO: handle exception
-			testService.testMapper("aaa");
-			System.out.println("catch");
-		}
+	public String testPage(@RequestParam(name = "id", defaultValue = "1") Long id) {
+		
+		System.out.println("dddddddddddd = " + id);
+		
+		
 		return "test";
 	}
 	

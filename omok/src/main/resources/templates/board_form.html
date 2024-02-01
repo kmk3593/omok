@@ -8,6 +8,12 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
+
+	<form action="/board">
+		<input name="search">
+		<button type="submit">검색</button>
+	</form>
+
 	<table>
 		<thead>
 			<tr>
@@ -30,6 +36,8 @@
 			</tr>
 		</tbody>
 	</table>
+	
+	
 	
     <!-- 페이징처리 시작 -->
     <div th:if="${!boardList.isEmpty()}">

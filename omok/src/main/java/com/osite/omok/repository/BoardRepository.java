@@ -12,5 +12,13 @@ public interface BoardRepository extends JpaRepository<Board, Integer>{
 	
 	Page<Board> findAll(Pageable pageable);
 	
+	/**
+	 *  Title 컬럼으로 검색
+	 * @param search
+	 * @param pageable
+	 * @return
+	 */
+	Page<Board> findByTitleContaining(String search, Pageable pageable);
+	
 }
  
