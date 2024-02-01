@@ -11,7 +11,11 @@ public interface OmokSettingRepository extends JpaRepository<OmokSetting, Intege
 
 	List<OmokSetting> findBywhiteStone(UserTable whiteStone);
 	
+	void deleteBygameNum(Integer gameNum);
+	
 	void deleteByroomID(String roomID);
+	
+//	void deleteByID
 	
 	OmokSetting findByroomID(String roomID);
 }
