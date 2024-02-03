@@ -54,9 +54,13 @@ public class BoardController {
 	 * 	그런데 게시글 페이징을 추가한. 
 	*/
 	@GetMapping("/board")
-	public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page) {
+	public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page,
+			@RequestParam(value="search", defaultValue="") String search) {
 		
-		Page<Board> paging = boardService.getList(page);
+		System.out.println("fffffffff = " + search);
+		
+		Page<Board> paging = search.isEmpty() ? boardService.getList(page) : boardService.getSearchList(page, search);
+		
 		model.addAttribute("boardList", paging);
 		return "board_form";
 		

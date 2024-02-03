@@ -258,4 +258,15 @@ public class BoardService {
 		return boardRepository.findAll(pageable);
 	}
 	
+	/**
+	 *  검색 
+	 */
+	public Page<Board> getSearchList(int page, String search){
+		
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("writeDateTime"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		return boardRepository.findByTitleContaining(search, pageable);
+	}	
+	
 }
