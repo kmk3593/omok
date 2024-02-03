@@ -19,8 +19,8 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 			<div class="mb-3">
 				<label for="inputID" class="form-label">ID</label>
 				<input id="inputID" type="text" th:field="*{username}" class="form-control">
-				<label color="blue"> 영어, 숫자 10글자 이내</label>
 				<input type="button" id="sameCheck" value="중복검사"/>
+				<label color="blue"> 영어, 숫자 10글자 이내</label>
 			</div>
 			<div class="mb-3">
 				<label for="inputPass" class="form-label">비밀번호</label>
@@ -47,13 +47,13 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 
 	var duplicateCheck = false;
 
-	//대소문자 구분 없음. 영어, 숫자. 10 글자 이하
+	// 아이디 기준 : 대소문자 구분 없음. 영어, 숫자. 10 글자 이하
 	var regexID = /^[a-zA-Z0-9]{1,10}$/;
-	// 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하
+	// 비밀번호 기준 : 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하
 	var regexPass = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
 	// 비밀 번호 확인. 이하 동문.
 	var regexConf = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\S]{1,20}$/;
-	// 한글 또는 영어 또는 숫자. 10글자 이하	
+	// 닉네임 기준 : 한글 또는 영어 또는 숫자. 10글자 이하	
 	var regexNick = /^[a-zA-Z0-9가-힣]{1,10}$/;
 	
 	let goodSignup = false;
@@ -81,20 +81,16 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 		
 	 	if(!regexID.test(processedString)){
 			alert("잘못된 ID : " + processedString);
-			
 		}else if(!regexPass.test(signupPass)){
 			alert("잘못된 Pass : " + signupPass);
-			
 		}else if(!regexConf.test(signupConf)){
 			alert("잘못된 Pass Confirm : " + signupConf);
-			 
 		}else if(!regexNick.test(signupNick)){
 			alert("잘못된 Nickname : " + signupNick);
-			
 		}else if(duplicateCheck==false){
 			alert("중복된 ID : " + duplicateCheck);
 		}else{
-			alert("똑똑한 ID : " + signupID);
+			alert("회원가입이 되셨습니다.");
 			goodSignup = true;
 		}   
 	 	return goodSignup;
