@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.osite.omok.dto.CommentDTO;
 import com.osite.omok.dto.HistoryCommentDTO;
 import com.osite.omok.entity.Board;
+import com.osite.omok.entity.Comment;
 import com.osite.omok.entity.HistoryComment;
 import com.osite.omok.entity.OmokOrder;
 import com.osite.omok.entity.OmokSetting;
@@ -57,7 +59,6 @@ public class BoardController {
 	public String list(Model model, @RequestParam(value="page", defaultValue = "0") int page,
 			@RequestParam(value="search", defaultValue="") String search) {
 		
-		System.out.println("fffffffff = " + search);
 		
 		Page<Board> paging = search.isEmpty() ? boardService.getList(page) : boardService.getSearchList(page, search);
 		
@@ -92,10 +93,18 @@ public class BoardController {
 	 * 	게시글 상세보기
 	*/
 	@GetMapping("/board/detail/{boardNum}")
-	public String boardDetailView(Model model, @PathVariable("boardNum") Integer boardNum) {
+	public String boardDetailView(Model model, @PathVariable("boardNum") Integer boardNum, Principal principal) {
 		
 		Board board = boardService.getBoardDetail(boardNum);
 		model.addAttribute("viewDetail", board);
+		
+		List<Comment> commentList = boardService.listComment(boardNum);
+		model.addAttribute("commentList", commentList);
+
+		
+		String name = (principal == null) ? "" : principal.getName();
+		
+		model.addAttribute("nowUser", name);
 		
 		return "board_detail";
 	}
@@ -191,5 +200,60 @@ public class BoardController {
 		System.out.println(historyCommentDTO);
 		return boardService.updateHistoryComment(historyCommentDTO);
 	}
+	
+	/**
+	 * 	댓글 작성
+	 */
+	@PostMapping("/comment/create")
+	@ResponseBody
+	public String insertComment(CommentDTO comment, Principal principal) {
+		
+		System.out.println("wwwwwwwwwwwwwwwwwwww");
+		System.out.println(comment.toString());
+		
+		boardService.createComment(comment, principal);
+		
+		
+		return "comment";
+	}
+	
+	/**
+	 * 	댓글 리스트
+	 */
+//	@GetMapping("/comment/list")
+//	@ResponseBody
+//	public List<Comment> listComment(Comment comment){
+//		
+//		List<Comment> commentList = boardService.listComment(comment);
+//		
+//		return commentList;
+//	}
+	
+	/**
+	 * 	댓글 수정
+	 */
+	@PostMapping("/comment/update")
+	@ResponseBody
+	public String updateComment(CommentDTO commentDTO) {
+		
+		System.out.println("UUUUUUUUUUUUUUUUUU = " + commentDTO);
+		
+		 boardService.updateComment(commentDTO);
+		
+		return "update success";
+	}
+	
+	/**
+	 * 	댓글 삭제
+	 */
+	@PostMapping("/comment/delete")
+	@ResponseBody
+	public String deleteComment(CommentDTO commentDTO) {
+		
+		boardService.deleteComment(commentDTO);
+		
+		return "delete success";
+	}
+	
 	
 }

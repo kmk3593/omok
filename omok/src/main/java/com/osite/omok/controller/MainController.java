@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.osite.omok.dto.TransferMessage;
 import com.osite.omok.entity.Comment;
 import com.osite.omok.service.TestService;
 import com.osite.omok.service.UserService;
@@ -49,11 +48,23 @@ public class MainController {
 	}
 	
 
+	@PostMapping("/test")
+	@ResponseBody
+	public String testPage(@RequestParam(value="str") String str) {
+		
+		System.out.println("dddddddddddd = " + str);
+		
+		
+		return "ddddd";
+	}
+	
 	@GetMapping("/test")
-	public String testPage(@RequestParam(name = "id", defaultValue = "1") Long id) {
+
+	public String test() {
 		
 		return "test";
 	}
+	
 	
 	@PostMapping("/test/ajax")
 	@ResponseBody

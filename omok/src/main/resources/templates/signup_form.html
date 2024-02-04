@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
@@ -9,39 +9,42 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 "></script>
 </head>
 <body>
-	<div layout:fragment="content" class="container my-3"> 
-		<div>
-			<div>
-				<h4>회원가입</h4>
-			</div>
-		</div> 
-		<form th:action="@{/user/signup}"  onsubmit="return validateForm()" th:object="${userCreateForm}" method="post">
-			<div class="mb-3">
-				<label for="inputID" class="form-label">ID</label>
-				<input id="inputID" type="text" th:field="*{username}" class="form-control">
-				<input type="button" id="sameCheck" value="중복검사"/>
-				<label color="blue"> 영어, 숫자 10글자 이내</label>
-			</div>
-			<div class="mb-3">
-				<label for="inputPass" class="form-label">비밀번호</label>
-				<input id="inputPass" type="text" th:field="*{password1}" class="form-control">
-				<label color="blue"> 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하 </label>
-			</div>
-			<div class="mb-3">
-				<label for="inputConf" class="form-label">비밀번호 확인</label>
-				<input id="inputConf" type="text" th:field="*{password2}" class="form-control">
-				<label color="blue"> 이하 동문</label>
-			</div> 
-			<div class="mb-3">
-				<label for="inputNick" class="form-label">닉네임</label>
-				<input id="inputNick" type="text" th:field="*{nickname}" class="form-control">
-				<label color="blue"> 한글, 영어, 숫자 10글자 이하</label>
-			</div>	
-			
-			<button type="submit" class="btn btn-primary">회원가입</button>	
+	
+	<nav th:replace="~{navbar :: navbarFragment}"></nav>
 
-		</form>
-	</div>
+
+	<div>
+		<div>
+			<h4>회원가입</h4>
+		</div>
+	</div> 
+	<form th:action="@{/user/signup}"  onsubmit="return validateForm()" th:object="${userCreateForm}" method="post">
+		<div class="mb-3">
+			<label for="inputID" class="form-label">ID</label>
+			<input id="inputID" type="text" th:field="*{username}" class="form-control">
+			<label color="blue"> 영어, 숫자 10글자 이내</label>
+			<input type="button" id="sameCheck" value="중복검사"/>
+		</div>
+		<div class="mb-3">
+			<label for="inputPass" class="form-label">비밀번호</label>
+			<input id="inputPass" type="text" th:field="*{password1}" class="form-control">
+			<label color="blue"> 영어, 숫자, 특수문자 가능. 영어,숫자는 무조건 들어가야. 20 글자 이하 </label>
+		</div>
+		<div class="mb-3">
+			<label for="inputConf" class="form-label">비밀번호 확인</label>
+			<input id="inputConf" type="text" th:field="*{password2}" class="form-control">
+			<label color="blue"> 이하 동문</label>
+		</div> 
+		<div class="mb-3">
+			<label for="inputNick" class="form-label">닉네임</label>
+			<input id="inputNick" type="text" th:field="*{nickname}" class="form-control">
+			<label color="blue"> 한글, 영어, 숫자 10글자 이하</label>
+		</div>	
+		
+		<button type="submit" class="btn btn-primary">회원가입</button>	
+
+	</form>
+
 	
 <script type="text/javascript">
 
@@ -89,8 +92,12 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 			alert("잘못된 Nickname : " + signupNick);
 		}else if(duplicateCheck==false){
 			alert("중복된 ID : " + duplicateCheck);
+		}else if(signupPass!==signupConf){ 
+			alert(" '비밀번호' 와 '비밀번호 확인' 이 일치하지 않음.");
 		}else{
+
 			alert("회원가입이 되셨습니다.");
+
 			goodSignup = true;
 		}   
 	 	return goodSignup;
@@ -110,7 +117,13 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 			url:"/user/duplicate/check/id",
 			data : params,
 			success : function(same){
-				alert("true || false -> " + same);
+				// alert("true || false -> " + same);
+				if(same){
+					alert("사용 가능한 ID ");
+				}else{
+					alert("!!! 사용 불가능한 ID");
+				}
+				
 				duplicateCheck = same;
 
 			},
