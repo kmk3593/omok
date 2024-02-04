@@ -1,5 +1,7 @@
 package com.osite.omok.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +18,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user") // request = post + get
 public class UserController {
 	
 	private final UserService userService;
 	
 	@GetMapping("/signup")
-	public String signup(UserCreateForm userCreateForm) {
+	public String signup(UserCreateForm userCreateForm, Principal principal) {
+		if (principal != null) {
+			return "/";
+		}
 		return "signup_form"; 
 	}
 	
@@ -44,7 +49,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/login")
-	public String login() {
+	public String login(Principal principal) {
+		if (principal != null) {
+			return "/";
+		}
 		return "login_form";
 	}
 	
@@ -67,5 +75,18 @@ public class UserController {
 		}
 		
 		return same;
+	}
+	
+	@PostMapping("/get/nickname")
+	@ResponseBody
+	public String getNickname(Principal principal) {
+		
+		if (principal == null) {
+			return "";
+		}
+		String username = principal.getName(); // <- 아이디
+		String nickname = userService.getNicknameByUsername(username);
+		
+		return nickname;
 	}
 }

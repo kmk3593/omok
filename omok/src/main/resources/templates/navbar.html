@@ -1,19 +1,16 @@
 <nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">메인화면</a>
-<!--         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button> -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-             
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	            <li class="nav-item">
+	            	<a class="navbar-brand" href="/">메인화면</a>
+	            </li>
                 <li class="nav-item">
                     <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
                     <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/signup">회원가입</a>
+                    <a class="nav-link" href="/user/signup" sec:authorize="isAnonymous()">회원가입</a>
                 </li>
                 <li class="nav-item">
                     <a href="/omok/list">오목하러 가기</a>
@@ -24,8 +21,46 @@
 				<li class="nav-item">
                     <a href="/board">게시판 페이지</a>
                 </li> 
-                     
+                 
+                 <!--
+	             ajax를 쓰겠다.
+	             principal의 username(아이디) 로 닉네임 찾기
+	             ajax의 반환된 닉네임을 id = nicknameTag 인 태그에 값 넣기
+	              -->
+	              <li class="nav-item" sec:authorize="isAuthenticated()">
+	             	<div id="nicknameTag"></div>
+	             </li>    
             </ul>
         </div>
     </div>
+    
+    <script type="text/javascript">
+    	
+    	$(document).ready(function(){
+    	  // 실행할 기능을 정의해주세요.
+    		$.ajax({
+                type : "POST",            // HTTP method type(GET, POST) 형식이다.
+                url : "/user/get/nickname",      // 컨트롤러에서 대기중인 URL 주소이다.
+                success : function(nickname){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                    // 응답코드 > 0000
+                    if(nickname == ""){
+                    	/* 닉네임 태그 지우기 */
+                    } else{ /* 닉네임이 있다면 */
+                    	/* 닉네임 태그에 값 넣기 */
+                    	document.getElementById("nicknameTag");
+                    	
+                    	let nickTag = document.getElementById("nicknameTag");
+                    	nickTag.innerText = nickname+" 님 환영합니다";
+                    }
+                    
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                    alert("통신 실패.")
+                }
+            });
+          
+    	});
+    
+    </script>
+    
 </nav>

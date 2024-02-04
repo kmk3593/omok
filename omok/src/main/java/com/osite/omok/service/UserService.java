@@ -53,5 +53,13 @@ public class UserService {
 		}
 		
 	}
+
+	public String getNicknameByUsername(String username) {
+		// TODO Auto-generated method stub
+		Optional<UserTable> optionalUser = userRepository.findByusername(username);
+		UserTable user = optionalUser.get();
+		
+		return user.getNickname();
+	}
 	
 }

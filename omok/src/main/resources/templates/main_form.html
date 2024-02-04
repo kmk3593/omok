@@ -13,9 +13,6 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 	<nav th:replace="~{navbar :: navbarFragment}"></nav>
 
 	<h1>메인 페이지</h1>
-
-	<div sec:authorize="isAuthenticated()" th:text="${User.nickname} + '님 환영합니다'"></div>
-
 	 
 	<h1>채팅창</h1>
 	<p><textarea cols="50" rows="10" id="msgArea" readonly></textarea></p>
