@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
     <style>
@@ -28,10 +28,14 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+
+	<!-- <nav th:replace="~{navbar :: navbarFragment}"></nav> -->
+
 	<p>
 	<label>제목 : </label>
 	<label th:text="${viewDetail.title}"></label>
+	
+<!-- 	<label th:text="${nowUser}"></label> -->
 	
 	<a th:href="@{|/board/updating/${viewDetail.boardNum}|}" class="button">수정</a>
 	<a th:href="@{|/board/delete/${viewDetail.boardNum}|}" class="button">삭제</a>
@@ -52,12 +56,150 @@
 	<textarea th:text="${viewDetail.text}"></textarea>
 	</p>
 	
+	
+	<input id="board" th:value="${viewDetail.boardNum}" hidden="hidden">
 
 	<div>
 		<a href="/board">
 			<button>게시글 목록</button>
 		</a>
 	</div>
-</div>
+	
+	<div sec:authorize="isAuthenticated()">
+		<input id="comment" name="comment">
+		<button id="commentCreate" name="commentCreate">댓글 작성</button>
+	</div>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>내용</th>
+			 	<th>작성자</th>  
+				<th>작성일시</th>
+			</tr>		
+		</thead>
+		<tbody>
+			 <tr th:each="comment : ${commentList}"> 
+				<td th:text="${comment.commentNum}"></td>
+				<td th:id="${comment.commentNum}" th:text="${comment.comment}"></td>	
+				<td th:text="${comment.userNum.nickname}"></td> 	
+				<td th:text="${comment.writeDateTime}"></td>
+				
+				<td><button  th:class="${comment.commentNum}+'s'" th:if="${comment.userNum.username} == ${nowUser}" th:onclick="updateButton([[${comment.commentNum}]])" hidden="hidden">저장</button>
+				<button  th:class="${comment.commentNum}+'u'" th:if="${comment.userNum.username} == ${nowUser}" th:onclick="transform([[${comment.commentNum}]], [[${comment.comment}]])">수정</button></td>
+				<td><button  th:if="${comment.userNum.username} == ${nowUser}" th:onclick="deleteButton([[${comment.commentNum}]])">삭제</button></td>		
+			</tr>
+		</tbody>
+	</table>
+	
+	
+
 </body>
+<script type="text/javascript">
+
+
+/* 	$("#hide_btn").click(function() {
+	    $("#panel").hide();
+	});
+	$("#show_btn").click(function() {
+	    $("#panel").show();
+	}); */
+
+
+	function transform(num, prevComment){
+		
+		var temp = "." + num + "s";
+		
+		var temp2 = "." + num + "u";
+		
+		$(temp).show();
+		
+		$(temp2).hide();
+
+		var index = "#" + num;
+		
+		$( index ).contents().unwrap().wrap( '<input id=' + num + ' value=' + prevComment + ' >' );
+		
+	}
+
+	
+	function updateButton(num){
+		
+		var commentIndex = "#" + num;
+		// alert(commentIndex);
+		// alert($(commentIndex).val());
+		
+      var params = {
+        		commentNum		: num
+      			, comment      	: $(commentIndex).val()
+               	, boardNum		: $("#board").val()
+      }
+          
+      $.ajax({
+          type : "POST",            
+          url : "/comment/update",      
+          data : params,            
+          success : function(res){ 
+
+              location.reload();
+
+          },
+          error : function(XMLHttpRequest, textStatus, errorThrown){ 
+              alert("통신 실패.")
+          }
+      }); 
+		
+	}
+	
+	function deleteButton(num){
+		
+        var params = {
+                commentNum : num
+      }
+        
+          
+      $.ajax({
+          type : "POST",            
+          url : "/comment/delete",      
+          data : params,            
+          success : function(res){ 
+          
+              location.reload();
+
+          },
+          error : function(XMLHttpRequest, textStatus, errorThrown){ 
+              alert("통신 실패.")
+          }
+      });
+		
+	}
+
+
+
+ $("#commentCreate").click(function(){
+    
+        var params = {
+                  comment      : $("#comment").val()
+                 , boardNum		: $("#board").val()
+        }
+            
+        $.ajax({
+            type : "POST",            
+            url : "/comment/create",      
+            data : params,            
+            success : function(res){ 
+            
+                location.reload();
+
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown){ 
+                alert("통신 실패.")
+            }
+        });
+
+     });
+
+</script>
+
 </html>

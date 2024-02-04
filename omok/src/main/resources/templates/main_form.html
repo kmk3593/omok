@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>메인페이지</title>
@@ -9,35 +9,14 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 "></script>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
+
+	<nav th:replace="~{navbar :: navbarFragment}"></nav>
+
 	<h1>메인 페이지</h1>
- 	<h2 sec:authorize="isAuthenticated()" th:text="${User.nickname}"></h2> 
-	<div>
-          <ol class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/signup}">회원가입</a>
-                </li>
-           </ol>
-	</div>
 
+	<div sec:authorize="isAuthenticated()" th:text="${User.nickname} + '님 환영합니다'"></div>
 
-	<div>
-		<a href="/omok/list">오목하러 가기</a>
-	</div>
-	<div>
-		<a href="/test">테스트 페이지</a>
-	</div>
-	<div>
-		<a href="/board/history/list">대국 기록 페이지</a>
-	</div>
-	<div>
-		<a  sec:authorize="isAuthenticated()" href="/board">게시판 페이지</a>
-	</div>	
-	
+	 
 	<h1>채팅창</h1>
 	<p><textarea cols="50" rows="10" id="msgArea" readonly></textarea></p>
 	
@@ -45,8 +24,7 @@ https://cdn.jsdelivr.net/npm/verbal-expressions@1.0.2/dist/verbalexpressions.min
 		<p><input cols="50" rows="1" id="msg" onkeydown="handleKeyPress(event)">  
 		<input type="submit" id="input-send" sec:authorize="isAuthenticated()"></p>
 		<!-- <input type="submit" value="입력"> -->
-	
-</div>
+
 	 
 	
 <script th:inline="javascript">

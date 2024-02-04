@@ -36,7 +36,7 @@ public class ChatHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception{
 		
 		String payload = message.getPayload();
-		System.out.println("payload : " + payload);
+		System.out.println("))))))))))))))))))))))))))))))))payload : " + payload);
 		// 1. 채팅 서비스 쪽에 저장하는 함수를 생성
 		// 2. 그 함수는 jpa repository를 이용한다
 		// 3. 그 함수를 이 곳에 호출해서 채팅이 보내질 때, 채팅내역을 저장한다.

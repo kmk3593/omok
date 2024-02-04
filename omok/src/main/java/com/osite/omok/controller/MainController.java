@@ -48,14 +48,22 @@ public class MainController {
 	}
 	
 
+	@PostMapping("/test")
+	@ResponseBody
+	public String testPage(@RequestParam(value="str") String str) {
+		
+		System.out.println("dddddddddddd = " + str);
+		
+		
+		return "ddddd";
+	}
+	
 	@GetMapping("/test")
-	public String testPage(@RequestParam(name = "id", defaultValue = "1") Long id) {
-		
-		System.out.println("dddddddddddd = " + id);
-		
+	public String test() {
 		
 		return "test";
 	}
+	
 	
 	@PostMapping("/test/ajax")
 	@ResponseBody

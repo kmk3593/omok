@@ -13,10 +13,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.osite.omok.dto.BoardDetialDTO;
+import com.osite.omok.dto.CommentDTO;
 import com.osite.omok.dto.HistoryCommentDTO;
 import com.osite.omok.dto.OrderDTO;
 import com.osite.omok.dto.SettingDTO;
 import com.osite.omok.entity.Board;
+import com.osite.omok.entity.Comment;
 import com.osite.omok.entity.HistoryComment;
 import com.osite.omok.entity.OmokOrder;
 import com.osite.omok.entity.OmokSetting;
@@ -27,6 +29,7 @@ import com.osite.omok.mapper.OmokOrderMapper;
 import com.osite.omok.mapper.OmokSettingMapper;
 import com.osite.omok.mapper.UserTableMapper;
 import com.osite.omok.repository.BoardRepository;
+import com.osite.omok.repository.CommentRepository;
 import com.osite.omok.repository.UserTableRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,7 @@ public class BoardService {
 	private final OmokSettingMapper omokSettingMapper;
 	private final OmokOrderMapper omokOrderMapper;
 	private final HistoryCommentMapper historyCommentMapper;
+	private final CommentRepository commentRepository;
 	
 	public List<OmokSetting> getOmokHistoryList() {
 		
@@ -268,5 +272,74 @@ public class BoardService {
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		return boardRepository.findByTitleContaining(search, pageable);
 	}	
+	
+	/**
+	 * 	댓글 작성
+	 */
+	public void createComment(CommentDTO commentDto, Principal principal) {
+		
+		Comment comment = new Comment();
+		
+		comment.setComment(commentDto.getComment());
+		comment.setBoardNum(commentDto.getBoardNum());
+		
+		// principal을 통해 로그인한 유저의 id를 획득.
+		Optional<UserTable> _userTable = userTableRepository.findByusername(principal.getName());
+		comment.setUserNum(_userTable.get());
+		
+		// 현재 시간 저장
+		LocalDateTime createTime = LocalDateTime.now();
+		comment.setWriteDateTime(createTime);
+		
+		commentRepository.save(comment);
+
+	}
+	
+	/**
+	 * 	댓글 조회
+	 * 	service 에서 해당 게시글에 속한 댓글 리스트를 불러오는 함수 작성
+	 *  controller 에서 service 의 해당 함수를 적절한 매개변수와 함께 호출한다.
+	 *  
+	 */
+	// public List<Comment> listComment(Comment comment){
+	 public List<Comment> listComment(Integer boardNum){
+		 
+	//	 List<Comment> getList = commentRepository.findByboardNumBoardNum(comment.getBoardNum().getBoardNum());
+		 List<Comment> getList = commentRepository.findByboardNumBoardNum(boardNum);
+		 
+		 return getList;
+	 }
+	 
+	/**
+	 * 	댓글 수정
+	 */
+	 public void updateComment(CommentDTO commentDTO) {
+		 
+		 Comment comment = commentRepository.findByCommentNum(commentDTO.getCommentNum());
+		 
+		 comment.setComment(commentDTO.getComment());
+		 
+		 System.out.println("UUUUUwwwUUUUUU = " + comment);
+		 
+//		 comment.setComment(commentDTO.getComment());
+//		 comment.setCommentNum(commentDTO.getCommentNum());
+//		 comment.setBoardNum(commentDTO.getBoardNum());
+//		 comment.setUserNum(commentDTO.getUserNum());
+//		 
+//		 LocalDateTime updateTime = LocalDateTime.now();
+//		 comment.setWriteDateTime(updateTime);
+		 
+		 commentRepository.save(comment);
+		 
+	 }
+	 
+	 /**
+	  *  댓글 삭제
+	  */
+	 public void deleteComment(CommentDTO commentDTO) {
+		 
+		 commentRepository.deleteById(commentDTO.getCommentNum());
+		 
+	 }
 	
 }
