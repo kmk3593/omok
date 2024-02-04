@@ -1,5 +1,7 @@
 package com.osite.omok.dto;
 
+import com.osite.omok.entity.UserTable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +22,6 @@ public class TransferMessage {
 	private String message;
 	private Integer xLine;
 	private Integer yLine;
+	private UserTable user;
 	
 }
