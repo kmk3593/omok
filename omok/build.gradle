@@ -49,9 +49,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	
-	// http client
-	implementation 'org.apache.httpcomponents:httpclient:4.5'
-	
 }
 
 tasks.named('test') {
