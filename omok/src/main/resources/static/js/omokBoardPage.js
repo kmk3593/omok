@@ -75,10 +75,16 @@ $(document).ready(function(){
 				timerReload();
 			}
 		} else if(transferMessage.type == "ENTER"){
-			let msgArea = document.querySelector('.msgArea');
-			let newMsg = document.createElement('div');
-			newMsg.innerText=transferMessage.message;
-			msgArea.append(newMsg);
+			// let msgArea = document.querySelector('.msgArea');
+			// let newMsg = document.createElement('div');
+			// newMsg.innerText=transferMessage.message;
+			// msgArea.append(newMsg);
+			
+			var talkMessage = transferMessage.message + "\n";
+    		$("#msgArea").append(talkMessage);
+			const height = $('#msgArea').prop('scrollHeight');
+			$('#msgArea').scrollTop(height);
+			
 			enterPlayerSound.play();
 			if(playerNumberCheck()== 2){
 				clearInterval(timerOn);
@@ -87,10 +93,11 @@ $(document).ready(function(){
 				clearInterval(timerOn);
 			}
 		} else if(transferMessage.type == "TALK"){
-			let msgArea = document.querySelector('.msgArea');
-			let newMsg = document.createElement('div');
-			newMsg.innerText=transferMessage.message;
-			msgArea.append(newMsg);
+			var talkMessage = transferMessage.message + "\n";
+    		$("#msgArea").append(talkMessage);
+			const height = $('#msgArea').prop('scrollHeight');
+			$('#msgArea').scrollTop(height);
+			
 		} else if(transferMessage.type == "QUIT"){
 			sendWinMessage();
 			gameWin();
@@ -191,13 +198,15 @@ function turnOver(){
 }
 
 function sendMessage(){
-		let content=document.querySelector('.content').value;
+		let inputTag=document.querySelector('.content');
 		var talkMessage={
 			"type" : "TALK",
 			"roomID":roomID,
 			"sender":userNum,
-			"message":content
+			"message":inputTag.value
 		};
+		
+		inputTag.value = "";
 		
 		// 아래와 같이 쓰는 방법도 존재
 		// "roomID":[[${room.roomID}]],

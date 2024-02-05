@@ -62,4 +62,8 @@ public class UserService {
 		return user.getNickname();
 	}
 	
+	public UserTable getUserInfoByUserNum(Integer userNum) {
+		return userRepository.findByuserNum(userNum);
+	}
+	
 }

@@ -79,6 +79,7 @@ public class OmokController {
 		String 아이디 = authentication.getName();
 		UserTable user = userService.getUserInfo(아이디);
 		model.addAttribute("userNum", user.getUserNum());
+		model.addAttribute("user", user);
 		
 		stone = omokService.enterOmokPlayer(roomID, authentication);
 		

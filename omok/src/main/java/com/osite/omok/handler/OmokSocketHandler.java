@@ -92,7 +92,8 @@ public class OmokSocketHandler extends TextWebSocketHandler {
 		if (transferMessage.getType().equals(TransferMessage.messageType.ENTER)) {
 			// 메시지 타입이 ENTER의 경우
 			sessions.add(session);
-			transferMessage.setMessage(transferMessage.getSender()+"번 유저가 입장하셨습니다.");
+			UserTable user = userService.getUserInfoByUserNum(transferMessage.getSender());
+			transferMessage.setMessage(user.getNickname()+" 님이 입장하셨습니다.");
 			sendToEachSocket(sessions, new TextMessage(objectMapper.writeValueAsString(transferMessage)));
 		} else if (transferMessage.getType().equals(TransferMessage.messageType.QUIT)) {
 			// 메시지 타입이 QUIT의 경우
@@ -101,11 +102,14 @@ public class OmokSocketHandler extends TextWebSocketHandler {
 			if (sessions.size() == 0) {
 				omokService.deleteRoomByID(room.getRoomID());
 			}
-            transferMessage.setMessage(transferMessage.getSender()+"번 유저가 퇴장하셨습니다.");
+			UserTable user = userService.getUserInfoByUserNum(transferMessage.getSender());
+            transferMessage.setMessage(user.getNickname()+" 님이 퇴장하셨습니다.");
             sendToEachSocket(sessions,new TextMessage(objectMapper.writeValueAsString(transferMessage)));
 		} else if (transferMessage.getType().equals(TransferMessage.messageType.TALK)) {
 			// 메시지 타입이 TALK의 경우
-			sendToEachSocket(sessions,message);
+			UserTable user = userService.getUserInfoByUserNum(transferMessage.getSender());
+			transferMessage.setMessage(user.getNickname()+" : " + transferMessage.getMessage());
+			sendToEachSocket(sessions, new TextMessage(objectMapper.writeValueAsString(transferMessage)));
 		} else if (transferMessage.getType().equals(TransferMessage.messageType.PLACE)) {
 			// 메시지 타입이 PLACE(착수)의 경우
 			if (room.getSessions().size()!=2) {
