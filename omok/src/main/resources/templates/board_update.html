@@ -28,6 +28,9 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+
 <div layout:fragment="content" class="container my-3">
 	<form th:action="@{|/board/update/${viewDetail.boardNum}|}" method="get">
 

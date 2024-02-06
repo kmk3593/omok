@@ -8,6 +8,8 @@
 </head>
 <body>
 
+	<nav th:replace="~{navbar :: navbarFragment}"></nav>
+
 	<!-- 로그인 정보가 있을경우 나타낼 화면 -->
 	<th:block sec:authorize="isAuthenticated()">
 		<form th:action="@{/omok/create/room}" method="post">

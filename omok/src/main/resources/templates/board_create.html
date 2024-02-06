@@ -7,6 +7,9 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
+
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+	
 <div layout:fragment="content" class="container my-3">
 	<h1>게시글 작성</h1>
 	<form th:action="@{/board/create}" method="post">

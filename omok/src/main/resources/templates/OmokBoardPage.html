@@ -11,6 +11,8 @@
 <script th:src="@{/js/omokBoardPage.js}" th:inline="javascript" type="text/javascript"></script>
 </head>
 <body>
+	
+	<nav th:replace="~{navbar :: navbarFragment}"></nav>
 
 	<div class="board_space">
 		<div class="back_space" id="board_space"></div>
@@ -21,8 +23,7 @@
 	<div class="function_space">
 		<div>
 			<div>메세지 창</div>
-			<!-- <div class="msgArea"></div> -->
-			<textarea rows="8" cols="50" class="msgArea" id="msgArea"></textarea>
+			<textarea rows="8" cols="50" class="msgArea" id="msgArea" readonly="readonly"></textarea>
 		</div>
 		<input type="text" placeholder="보낼 메세지를 입력하세요." class="content" onkeydown="inputEnterKey(event)">
 		<button type="button" class="sendBtn" onclick="sendMessage()">전송</button>
@@ -31,11 +32,7 @@
 	    <input id="stone" th:value=${stone} hidden="hidden">
 	    <input id="turn" value="black" hidden="hidden">
 	    
-	    <div id="timer">
-	    
-	    	
-	    
-	    </div>
+	    <div id="timer"></div>
 	</div>
 	
 </body>
