@@ -63,7 +63,7 @@
 
 ## 패키지 구조
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/29509335-116e-4f25-8111-6542a6d5141e/50ca58df-e707-4f40-8b73-4899e08c38f8/Untitled.png)
+![Untitled](https://github.com/kmk3593/omok/assets/81403633/9fabcb52-11ae-4e75-a0e0-18a42714a682)
 
 ---
 
@@ -75,16 +75,16 @@
     - **onmessage**, **send** 등의 웹소켓 내부 함수 사용하여 구현
     - 채팅 전송 과정에서 채팅 로그를 DB 에 저장
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/29509335-116e-4f25-8111-6542a6d5141e/47194f90-bc9b-4762-b84c-022e763a92ed/Untitled.png)
+![Untitled](https://github.com/kmk3593/omok/assets/81403633/aba723d3-c03c-48f4-8f9f-abf356efd9ad)
 
 - **오목**
     - **handleTextMessage** 함수를 오버라이딩하여 구현
     - 방마다 각기 다른 **UUID** 코드를 기반으로 데이터를 뿌림
         - **UUID** : 일련의 숫자와 문자로 구성된 128비트 값
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/29509335-116e-4f25-8111-6542a6d5141e/c1a72869-1c4d-4cef-a85a-511f7a278a27/Untitled.png)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/c34ccc55-b030-4dab-b8b9-7e1ff16ad2bd)
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/29509335-116e-4f25-8111-6542a6d5141e/e3bc3f37-dd91-462f-b59c-6ce2f8df5557/Untitled.png)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/5a742f98-14a3-4b29-97e8-efa33beab1da)
     
 
 ### 2. Spring Security 관련
