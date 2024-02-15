@@ -63,7 +63,7 @@
 
 ## 패키지 구조
 
-    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/9fabcb52-11ae-4e75-a0e0-18a42714a682)
+![Untitled](https://github.com/kmk3593/omok/assets/81403633/82e6248b-163e-4bd4-afe2-1ba41635de2b)
 
 ---
 
