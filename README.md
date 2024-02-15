@@ -44,9 +44,9 @@
     
 - **DB 정보:**
 
-![Untitled](https://github.com/kmk3593/omok/assets/81403633/8dabb3d8-a929-4018-831d-3d2d004f560a)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/8dabb3d8-a929-4018-831d-3d2d004f560a)
 
-![Untitled](https://github.com/kmk3593/omok/assets/81403633/67a3c916-4e92-4e20-8852-349bfcf7ed2e)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/67a3c916-4e92-4e20-8852-349bfcf7ed2e)
 
 - **ORM** (Hibernate**) :**
     
@@ -63,7 +63,7 @@
 
 ## 패키지 구조
 
-![Untitled](https://github.com/kmk3593/omok/assets/81403633/9fabcb52-11ae-4e75-a0e0-18a42714a682)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/9fabcb52-11ae-4e75-a0e0-18a42714a682)
 
 ---
 
@@ -75,7 +75,7 @@
     - **onmessage**, **send** 등의 웹소켓 내부 함수 사용하여 구현
     - 채팅 전송 과정에서 채팅 로그를 DB 에 저장
 
-![Untitled](https://github.com/kmk3593/omok/assets/81403633/aba723d3-c03c-48f4-8f9f-abf356efd9ad)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/aba723d3-c03c-48f4-8f9f-abf356efd9ad)
 
 - **오목**
     - **handleTextMessage** 함수를 오버라이딩하여 구현
@@ -111,7 +111,7 @@
 - **채팅**
     - 공백으로 시작하는 문자열 구분
 
-![Untitled](https://github.com/kmk3593/omok/assets/81403633/4ad4974a-3d1b-4d4f-b537-161347d900c1)
+    ![Untitled](https://github.com/kmk3593/omok/assets/81403633/4ad4974a-3d1b-4d4f-b537-161347d900c1)
 
 ---
 
